@@ -77,9 +77,7 @@ const askHumanInput: PermissionRequestInput = {
   tool_input: { question: "Should I proceed?", options: ["Yes", "No", "Cancel"] },
 };
 
-function makeMockSlackClient(
-  postMessageResult: object = { ok: true, ts: "111.222" }
-): SlackClient {
+function makeMockSlackClient(postMessageResult: object = { ok: true, ts: "111.222" }): SlackClient {
   return {
     web: {
       chat: {
@@ -162,9 +160,7 @@ describe("handlePermissionRequest — Bash tool (non-ask-human)", () => {
     await handlePermissionRequest(bashPermissionInput, slackClient, mockConfig);
     const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     const blocks = callArgs.attachments[0].blocks;
-    const headlineSection = blocks.find(
-      (b) => b.type === "section"
-    );
+    const headlineSection = blocks.find((b) => b.type === "section");
     expect(headlineSection?.text?.text).toContain("Bash");
   });
 
@@ -238,9 +234,7 @@ describe("handlePermissionRequest — ask_human_via_slack tool", () => {
     await handlePermissionRequest(askHumanInput, slackClient, mockConfig);
     const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     const blocks = callArgs.attachments[0].blocks;
-    const headlineSection = blocks.find(
-      (b) => b.type === "section"
-    );
+    const headlineSection = blocks.find((b) => b.type === "section");
     expect(headlineSection?.text?.text).toContain("Should I proceed?");
   });
 
@@ -305,9 +299,7 @@ describe("handlePermissionRequest — ask_human_via_slack tool", () => {
     await handlePermissionRequest(noQuestionInput, slackClient, mockConfig);
     const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     const blocks = callArgs.attachments[0].blocks;
-    const headlineSection = blocks.find(
-      (b) => b.type === "section"
-    );
+    const headlineSection = blocks.find((b) => b.type === "section");
     // Falls back to "Question from Claude"
     expect(headlineSection?.text?.text).toContain("Question from Claude");
   });
@@ -318,9 +310,7 @@ describe("handlePermissionRequest — ask_human_via_slack tool", () => {
     await handlePermissionRequest(askHumanInput, slackClient, configWithUser);
     const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     const blocks = callArgs.attachments[0].blocks;
-    const headlineSection = blocks.find(
-      (b) => b.type === "section"
-    );
+    const headlineSection = blocks.find((b) => b.type === "section");
     expect(headlineSection?.text?.text).toContain("<@U88888888>");
   });
 });

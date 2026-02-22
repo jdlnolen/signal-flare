@@ -141,7 +141,9 @@ describe("routeHookEvent", () => {
       hook_event_name: "UnknownEvent",
     } as unknown as HookInput;
 
-    await expect(routeHookEvent(unknownInput, mockSlackClient, mockConfig)).resolves.toBeUndefined();
+    await expect(
+      routeHookEvent(unknownInput, mockSlackClient, mockConfig)
+    ).resolves.toBeUndefined();
     expect(mockHandleStop).not.toHaveBeenCalled();
     expect(mockHandlePostToolUseFailure).not.toHaveBeenCalled();
     expect(mockHandlePermissionRequest).not.toHaveBeenCalled();

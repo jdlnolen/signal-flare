@@ -12,13 +12,17 @@ const { mockPollForReply, mockSleep } = vi.hoisted(() => ({
   mockSleep: vi.fn().mockResolvedValue(undefined),
 }));
 
-const { mockBuildQuestionMessage, mockBuildStillWaitingMessage, mockBuildTimeoutMessage, mockBuildResponseReceivedMessage } =
-  vi.hoisted(() => ({
-    mockBuildQuestionMessage: vi.fn().mockReturnValue({ attachments: [] }),
-    mockBuildStillWaitingMessage: vi.fn().mockReturnValue({ text: "still waiting" }),
-    mockBuildTimeoutMessage: vi.fn().mockReturnValue({ text: "timed out" }),
-    mockBuildResponseReceivedMessage: vi.fn().mockReturnValue({ text: "response received" }),
-  }));
+const {
+  mockBuildQuestionMessage,
+  mockBuildStillWaitingMessage,
+  mockBuildTimeoutMessage,
+  mockBuildResponseReceivedMessage,
+} = vi.hoisted(() => ({
+  mockBuildQuestionMessage: vi.fn().mockReturnValue({ attachments: [] }),
+  mockBuildStillWaitingMessage: vi.fn().mockReturnValue({ text: "still waiting" }),
+  mockBuildTimeoutMessage: vi.fn().mockReturnValue({ text: "timed out" }),
+  mockBuildResponseReceivedMessage: vi.fn().mockReturnValue({ text: "response received" }),
+}));
 
 vi.mock("../slack/poller.js", () => ({
   pollForReply: mockPollForReply,
@@ -50,9 +54,15 @@ function captureToolHandler(
   let capturedHandler: ((args: Record<string, unknown>) => Promise<unknown>) | undefined;
 
   const mockServer = {
-    registerTool: vi.fn((_name: string, _config: unknown, handler: (args: Record<string, unknown>) => Promise<unknown>) => {
-      capturedHandler = handler;
-    }),
+    registerTool: vi.fn(
+      (
+        _name: string,
+        _config: unknown,
+        handler: (args: Record<string, unknown>) => Promise<unknown>
+      ) => {
+        capturedHandler = handler;
+      }
+    ),
   };
 
   registerAskHumanTool(mockServer as never, slackClient, config);
@@ -127,7 +137,12 @@ describe("ask_human_via_slack tool handler", () => {
     });
 
     it("posts the question to the correct channel", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "OK", user: "U_HUMAN", elapsedMs: 100 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "OK",
+        user: "U_HUMAN",
+        elapsedMs: 100,
+      });
 
       const postMessage = createMockPostMessage();
       const slackClient = makeSlackClient(postMessage);
@@ -141,7 +156,12 @@ describe("ask_human_via_slack tool handler", () => {
     });
 
     it("calls buildQuestionMessage with the question params", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "Looks good", user: "U_HUMAN", elapsedMs: 50 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "Looks good",
+        user: "U_HUMAN",
+        elapsedMs: 50,
+      });
 
       const slackClient = makeSlackClient();
       const handler = captureToolHandler(slackClient, baseConfig);
@@ -149,13 +169,22 @@ describe("ask_human_via_slack tool handler", () => {
       await handler({ question: "Check this code?", context: "file.ts:42", urgency: "high" });
 
       expect(mockBuildQuestionMessage).toHaveBeenCalledWith(
-        expect.objectContaining({ question: "Check this code?", context: "file.ts:42", urgency: "high" }),
+        expect.objectContaining({
+          question: "Check this code?",
+          context: "file.ts:42",
+          urgency: "high",
+        }),
         undefined // SLACK_USER_ID is undefined in baseConfig
       );
     });
 
     it("posts response-received notice after getting a reply", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "Done", user: "U_HUMAN", elapsedMs: 200 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "Done",
+        user: "U_HUMAN",
+        elapsedMs: 200,
+      });
 
       const postMessage = createMockPostMessage();
       const slackClient = makeSlackClient(postMessage);
@@ -172,7 +201,12 @@ describe("ask_human_via_slack tool handler", () => {
 
   describe("urgency levels", () => {
     it("passes urgency: high through to buildQuestionMessage", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "Urgent reply", user: "U_H", elapsedMs: 10 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "Urgent reply",
+        user: "U_H",
+        elapsedMs: 10,
+      });
 
       const handler = captureToolHandler(makeSlackClient(), baseConfig);
       await handler({ question: "Urgent?", urgency: "high" });
@@ -184,7 +218,12 @@ describe("ask_human_via_slack tool handler", () => {
     });
 
     it("passes urgency: low through to buildQuestionMessage", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "Low reply", user: "U_H", elapsedMs: 10 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "Low reply",
+        user: "U_H",
+        elapsedMs: 10,
+      });
 
       const handler = captureToolHandler(makeSlackClient(), baseConfig);
       await handler({ question: "Low priority?", urgency: "low" });
@@ -198,7 +237,12 @@ describe("ask_human_via_slack tool handler", () => {
 
   describe("options handling", () => {
     it("passes options array through to buildQuestionMessage", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "2", user: "U_HUMAN", elapsedMs: 100 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "2",
+        user: "U_HUMAN",
+        elapsedMs: 100,
+      });
 
       const handler = captureToolHandler(makeSlackClient(), baseConfig);
       await handler({
@@ -214,7 +258,12 @@ describe("ask_human_via_slack tool handler", () => {
     });
 
     it("resolves selected_option when user replies with a number", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "2", user: "U_HUMAN", elapsedMs: 100 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "2",
+        user: "U_HUMAN",
+        elapsedMs: 100,
+      });
 
       const handler = captureToolHandler(makeSlackClient(), baseConfig);
       const result = (await handler({
@@ -286,7 +335,12 @@ describe("ask_human_via_slack tool handler", () => {
       // First poll: timeout, second poll: human reply
       mockPollForReply
         .mockResolvedValueOnce({ found: false, elapsedMs: 600000 })
-        .mockResolvedValueOnce({ found: true, text: "Sorry, late reply!", user: "U_HUMAN", elapsedMs: 100 });
+        .mockResolvedValueOnce({
+          found: true,
+          text: "Sorry, late reply!",
+          user: "U_HUMAN",
+          elapsedMs: 100,
+        });
 
       const handler = captureToolHandler(makeSlackClient(), baseConfig);
       const result = (await handler({ question: "Are you there?", urgency: "normal" })) as {
@@ -317,7 +371,11 @@ describe("ask_human_via_slack tool handler", () => {
     });
 
     it("returns isError:true when postMessage returns ok=false", async () => {
-      const postMessage = createMockPostMessage({ ok: false, ts: undefined, error: "channel_not_found" });
+      const postMessage = createMockPostMessage({
+        ok: false,
+        ts: undefined,
+        error: "channel_not_found",
+      });
       const slackClient = makeSlackClient(postMessage);
       const handler = captureToolHandler(slackClient, baseConfig);
 
@@ -333,7 +391,12 @@ describe("ask_human_via_slack tool handler", () => {
   describe("SEND_DELAY_MS", () => {
     it("calls sleep when SEND_DELAY_MS > 0", async () => {
       const configWithDelay = { ...baseConfig, SEND_DELAY_MS: 50 };
-      mockPollForReply.mockResolvedValue({ found: true, text: "OK", user: "U_HUMAN", elapsedMs: 10 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "OK",
+        user: "U_HUMAN",
+        elapsedMs: 10,
+      });
 
       const handler = captureToolHandler(makeSlackClient(), configWithDelay);
       await handler({ question: "Delayed?", urgency: "normal" });
@@ -342,7 +405,12 @@ describe("ask_human_via_slack tool handler", () => {
     });
 
     it("does NOT call sleep when SEND_DELAY_MS is 0", async () => {
-      mockPollForReply.mockResolvedValue({ found: true, text: "OK", user: "U_HUMAN", elapsedMs: 10 });
+      mockPollForReply.mockResolvedValue({
+        found: true,
+        text: "OK",
+        user: "U_HUMAN",
+        elapsedMs: 10,
+      });
 
       const handler = captureToolHandler(makeSlackClient(), baseConfig);
       await handler({ question: "Immediate?", urgency: "normal" });

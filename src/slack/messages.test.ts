@@ -136,12 +136,14 @@ describe("buildQuestionMessage", () => {
     const result = buildQuestionMessage({ ...baseParams, options: ["Option A", "Option B"] });
     const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     // Find a section block (after the question section) that contains the numbered list
-    const optionsBlock = blocks.filter((b) => b.type === "section").find((b) => {
-      if (b.type === "section") {
-        return b.text?.text?.includes("*1.*") || b.text?.text?.includes("*2.*");
-      }
-      return false;
-    });
+    const optionsBlock = blocks
+      .filter((b) => b.type === "section")
+      .find((b) => {
+        if (b.type === "section") {
+          return b.text?.text?.includes("*1.*") || b.text?.text?.includes("*2.*");
+        }
+        return false;
+      });
     expect(optionsBlock).toBeDefined();
     if (optionsBlock && optionsBlock.type === "section") {
       expect(optionsBlock.text?.text).toContain("Option A");
@@ -270,14 +272,20 @@ describe("buildHookMessage", () => {
   });
 
   it("includes a body section block when body is provided", () => {
-    const result = buildHookMessage({ label: "ERROR", headline: "Fail", body: "Error details here" });
-    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
-    const bodySection = blocks.filter((b) => b.type === "section").find((b) => {
-      if (b.type === "section") {
-        return b.text?.text === "Error details here";
-      }
-      return false;
+    const result = buildHookMessage({
+      label: "ERROR",
+      headline: "Fail",
+      body: "Error details here",
     });
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
+    const bodySection = blocks
+      .filter((b) => b.type === "section")
+      .find((b) => {
+        if (b.type === "section") {
+          return b.text?.text === "Error details here";
+        }
+        return false;
+      });
     expect(bodySection).toBeDefined();
   });
 

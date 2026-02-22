@@ -46,9 +46,11 @@ function makeMockSlackClient(postMessageImpl?: () => Promise<unknown>): SlackCli
   return {
     web: {
       chat: {
-        postMessage: vi.fn().mockImplementation(
-          postMessageImpl ?? (() => Promise.resolve({ ok: true, ts: "111.222" }))
-        ),
+        postMessage: vi
+          .fn()
+          .mockImplementation(
+            postMessageImpl ?? (() => Promise.resolve({ ok: true, ts: "111.222" }))
+          ),
       },
     } as unknown as SlackClient["web"],
     botUserId: "",
@@ -168,17 +170,13 @@ describe("handleStop", () => {
   });
 
   it("does not throw when Slack API call rejects", async () => {
-    const slackClient = makeMockSlackClient(() =>
-      Promise.reject(new Error("Slack API error"))
-    );
+    const slackClient = makeMockSlackClient(() => Promise.reject(new Error("Slack API error")));
     await expect(handleStop(baseInput, slackClient, mockConfig)).resolves.toBeUndefined();
   });
 
   it("logs error to stderr when Slack API call fails", async () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
-    const slackClient = makeMockSlackClient(() =>
-      Promise.reject(new Error("Network failure"))
-    );
+    const slackClient = makeMockSlackClient(() => Promise.reject(new Error("Network failure")));
 
     await handleStop(baseInput, slackClient, mockConfig);
     expect(errorSpy).toHaveBeenCalledWith(
