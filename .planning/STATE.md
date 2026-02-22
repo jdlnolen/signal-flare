@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 3 (npm Packaging and Setup Wizard) — Plan 01 complete, Plans 02 and 03 are next
+**Current focus:** Phase 3 (npm Packaging and Setup Wizard) — Plans 01 and 02 complete, Plan 03 is next
 
 ## Current Position
 
 Phase: 3 of 4 (npm Packaging and Setup Wizard) — IN PROGRESS
-Plan: 1 of 3 in current phase — COMPLETE
-Status: Phase 3 Plan 01 complete — CLI binary, dotenv integration, and package.json packaging preparation done
-Last activity: 2026-02-22 — Completed Plan 03-01 (CLI entry point, dotenv config loading, four-entry tsup build)
+Plan: 2 of 3 in current phase — COMPLETE
+Status: Phase 3 Plan 02 complete — Setup wizard, test command, and status command implemented with full Slack validation and safe config merging
+Last activity: 2026-02-22 — Completed Plan 03-02 (setup wizard, test/status commands, wizard utilities)
 
-Progress: [█████░░░░░] 50%
+Progress: [██████░░░░] 62%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 6 min
-- Total execution time: 31 min
+- Total plans completed: 6
+- Average duration: 5 min
+- Total execution time: 33 min
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [█████░░░░░] 50%
 |-------|-------|-------|----------|
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
 | 02-hook-integration | 2 | 10 min | 5 min |
-| 03-npm-packaging-and-setup-wizard | 1 | 3 min | 3 min |
+| 03-npm-packaging-and-setup-wizard | 2 | 5 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 5 min avg
+- Last 5 plans: 4 min avg
 - Trend: Accelerating
 
 *Updated after each plan completion*
@@ -67,6 +67,10 @@ Recent decisions affecting current work:
 - [03-01]: CLI shebang handled by tsup banner only — literal shebang in src/cli.ts causes double-shebang breaking ESM loading
 - [03-01]: dotenv.config({ quiet: true }) used to suppress dotenv v17 verbose output in MCP server context
 - [03-01]: resolveEnvFilePath() is synchronous (readFileSync at startup); SIGNAL_FLARE_ENV_FILE > ~/.config/signal-flare/config.json fallback
+- [03-02]: PermissionRequest hook uses PreToolUse key with matcher ".*" — handler internally filters for AskUserQuestion
+- [03-02]: hookCommand uses inline env var syntax (SIGNAL_FLARE_ENV_FILE=<path> <handler>) — no shell env inheritance needed
+- [03-02]: promptForToken returns existing token on empty Enter — allows re-running setup without re-entering unchanged values
+- [03-02]: status command checks both global and project config paths simultaneously for complete picture
 
 ### Pending Todos
 
@@ -80,5 +84,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 03-01-PLAN.md — CLI binary, dotenv integration, package.json packaging prep done, ready for Phase 3 Plan 02
+Stopped at: Completed 03-02-PLAN.md — Setup wizard, test/status commands, wizard utilities done, ready for Phase 3 Plan 03
 Resume file: None

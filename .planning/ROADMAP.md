@@ -58,7 +58,7 @@ Plans:
   3. After setup, a fresh Claude Code session automatically has both the MCP tool available and hooks firing (confirmed by restarting Claude Code after wizard completes)
   4. Setting `SLACK_BOT_TOKEN`, `SLACK_CHANNEL_ID`, and optionally `SLACK_USER_ID` environment variables is the only configuration required; the server fails fast with a helpful error if required vars are missing
   5. A developer following the README can create a Slack app, configure required scopes, install Signal Flare, and receive their first Slack notification without external help
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 Plans:
 - [ ] 03-01-PLAN.md — Package infrastructure: CLI entry point, dotenv integration, build config updates
 - [ ] 03-02-PLAN.md — Setup wizard, test command, and status command
@@ -83,5 +83,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Slack Infrastructure and MCP Tool | 2/2 | COMPLETE | 2026-02-22 |
 | 2. Hook Integration | 2/2 | Complete   | 2026-02-22 |
-| 3. npm Packaging and Setup Wizard | 0/3 | In progress | - |
+| 3. npm Packaging and Setup Wizard | 2/3 | In Progress|  |
 | 4. Quality and CI | 0/TBD | Not started | - |
