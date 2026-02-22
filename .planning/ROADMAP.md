@@ -43,7 +43,10 @@ Plans:
   2. When Claude Code encounters a tool error, an error notification appears in Slack with the error text and tool name
   3. When Claude calls `AskUserQuestion`, a Slack notification fires after the configured idle timeout (default 90s) — but if the user responds in the terminal before the timeout, no Slack message is sent
   4. The hook handler exits immediately after sending its notification and never blocks Claude Code's execution
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 02-01-PLAN.md — Hook infrastructure: types, config, message builders, lightweight Slack client, build config
+- [ ] 02-02-PLAN.md — Hook entry point, router, Stop/PostToolUseFailure/PermissionRequest handlers, and background watcher
 
 ### Phase 3: npm Packaging and Setup Wizard
 **Goal**: Any developer can install Signal Flare globally with one command and configure it for their workspace with a guided setup wizard
@@ -75,6 +78,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Slack Infrastructure and MCP Tool | 0/2 | Planning complete | - |
-| 2. Hook Integration | 0/TBD | Not started | - |
+| 2. Hook Integration | 0/2 | Planning complete | - |
 | 3. npm Packaging and Setup Wizard | 0/TBD | Not started | - |
 | 4. Quality and CI | 0/TBD | Not started | - |
