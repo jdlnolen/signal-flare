@@ -11,7 +11,7 @@ import type {
   HeaderBlock,
   DividerBlock,
 } from "@slack/types";
-import type { UrgencyLevel, AskHumanParams } from "../types.js";
+import type { UrgencyLevel, AskHumanParams, HookNotificationType } from "../types.js";
 
 interface UrgencyConfig {
   color: string;
@@ -35,6 +35,16 @@ const URGENCY_CONFIG: Record<UrgencyLevel, UrgencyConfig> = {
     emoji: ":information_source:",
     label: "FYI",
   },
+};
+
+/**
+ * Maps hook notification types to their display emoji + header text.
+ */
+const HOOK_LABEL_CONFIG: Record<HookNotificationType, { emoji: string; text: string }> = {
+  COMPLETED: { emoji: ":white_check_mark:", text: "Task Completed" },
+  ERROR: { emoji: ":x:", text: "Tool Error" },
+  QUESTION: { emoji: ":bell:", text: "Claude needs your input" },
+  PERMISSION: { emoji: ":lock:", text: "Permission Needed" },
 };
 
 /**
@@ -148,5 +158,121 @@ export function buildStillWaitingMessage(): { text: string } {
 export function buildResponseReceivedMessage(): { text: string } {
   return {
     text: "✅ Response received — answer delivered to Claude.",
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Hook notification message builders
+// ---------------------------------------------------------------------------
+
+/**
+ * Options for building a hook notification message.
+ */
+export interface HookMessageOptions {
+  /** Notification type label — controls header emoji and text. */
+  label: HookNotificationType;
+  /** Main summary text — displayed as bold section text. */
+  headline: string;
+  /** Optional detailed body (context, error text, numbered options, etc.). */
+  body?: string;
+  /** Optional code/file context displayed in a preformatted rich text block. */
+  context?: string;
+  /** Optional Slack user ID to @mention in the headline section. */
+  userId?: string;
+}
+
+/**
+ * Builds a unified Block Kit hook notification message for all hook types.
+ *
+ * All hook notification types use the same orange (#FFA500) color bar per
+ * locked decision — not distinct colors per type. The label (COMPLETED, ERROR,
+ * QUESTION, PERMISSION) differentiates the notification via the header block.
+ *
+ * Structure:
+ *   - Header block: emoji + label text
+ *   - Section block: optional @mention + bold headline
+ *   - Rich text preformatted (if context provided)
+ *   - Section block (if body provided)
+ *   - Divider
+ */
+export function buildHookMessage(
+  opts: HookMessageOptions
+): { attachments: MessageAttachment[] } {
+  const labelConfig = HOOK_LABEL_CONFIG[opts.label];
+  const blocks: KnownBlock[] = [];
+
+  // Header block: emoji + label text
+  const headerBlock: HeaderBlock = {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: `${labelConfig.emoji} ${labelConfig.text}`,
+      emoji: true,
+    },
+  };
+  blocks.push(headerBlock);
+
+  // Section block: optional @mention + bold headline
+  const mentionPrefix = opts.userId ? `<@${opts.userId}> ` : "";
+  const headlineBlock: SectionBlock = {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `${mentionPrefix}*${opts.headline}*`,
+    },
+  };
+  blocks.push(headlineBlock);
+
+  // Rich text block for code/file context (preformatted display)
+  if (opts.context) {
+    const contextText: RichTextText = {
+      type: "text",
+      text: opts.context,
+    };
+    const preformattedBlock: RichTextPreformatted = {
+      type: "rich_text_preformatted",
+      elements: [contextText],
+    };
+    const richTextBlock: RichTextBlock = {
+      type: "rich_text",
+      elements: [preformattedBlock],
+    };
+    blocks.push(richTextBlock);
+  }
+
+  // Body section (error details, numbered options, action details, etc.)
+  if (opts.body) {
+    const bodyBlock: SectionBlock = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: opts.body,
+      },
+    };
+    blocks.push(bodyBlock);
+  }
+
+  // Divider
+  const dividerBlock: DividerBlock = {
+    type: "divider",
+  };
+  blocks.push(dividerBlock);
+
+  const attachment: MessageAttachment = {
+    // Orange for all hook notification types — locked decision: no distinct colors per type
+    color: "#FFA500",
+    blocks,
+  };
+
+  return { attachments: [attachment] };
+}
+
+/**
+ * Builds a "resolved in terminal" message posted when the watcher detects
+ * the user has responded directly in the terminal before the hook timeout.
+ */
+export function buildResolvedInTerminalMessage(): { text: string } {
+  return {
+    text: "✅ Resolved in terminal — no action needed.",
   };
 }
