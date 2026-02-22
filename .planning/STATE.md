@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 4 (Quality and CI) — Plan 1 of 3 complete
+**Current focus:** Phase 4 (Quality and CI) — Plan 2 of 3 complete
 
 ## Current Position
 
 Phase: 4 of 4 (Quality and CI) — IN PROGRESS
-Plan: 1 of 3 in current phase — COMPLETE
-Status: Plan 04-01 complete — ESLint/Prettier/Vitest tooling installed, all source files lint-clean; ready for test authoring
-Last activity: 2026-02-22 — Completed Plan 04-01 (quality tooling setup and lint fix pass)
+Plan: 2 of 3 in current phase — COMPLETE
+Status: Plan 04-02 complete — 115 unit tests written for config, messages, and all hook handlers; 90.73% statement coverage
+Last activity: 2026-02-22 — Completed Plan 04-02 (unit tests for pure modules)
 
-Progress: [████████░░] 80%
+Progress: [█████████░] 87%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 6 min
-- Total execution time: 48 min
+- Total plans completed: 9
+- Average duration: 5.9 min
+- Total execution time: 53 min
 
 **By Phase:**
 
@@ -30,7 +30,7 @@ Progress: [████████░░] 80%
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
 | 02-hook-integration | 2 | 10 min | 5 min |
 | 03-npm-packaging-and-setup-wizard | 3 | 17 min | 5.7 min |
-| 04-quality-and-ci | 1 | 3 min | 3 min |
+| 04-quality-and-ci | 2 | 8 min | 4 min |
 
 **Recent Trend:**
 - Last 5 plans: 4 min avg
@@ -78,6 +78,10 @@ Recent decisions affecting current work:
 - [04-01]: @eslint/js installed separately — ESLint v10 does not bundle it as a transitive dependency
 - [04-01]: spawnWatcher config param removed (was unused) rather than using eslint-disable — cleaner API
 - [04-01]: 85% coverage threshold chosen (not 90%) — adjust once tests measure actual achievable coverage
+- [04-02]: vi.resetModules() + dynamic import() is the correct ESM pattern for testing modules that read process.env at load time
+- [04-02]: vi.spyOn(process, 'exit').mockImplementation(() => { throw ... }) used to test process.exit(1) without terminating test runner
+- [04-02]: vi.hoisted() required for mock function references inside vi.mock() factories in ESM context
+- [04-02]: Body section in Block Kit assertions found by filtering all section blocks and taking last — headline is always first section
 
 ### Pending Todos
 
@@ -91,5 +95,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 04-01-PLAN.md — ESLint/Prettier/Vitest tooling installed, all source files lint-clean; ready for test authoring in 04-02
+Stopped at: Completed 04-02-PLAN.md — 115 unit tests for config, messages, and all hook handlers; 90.73% statement coverage, 86.45% branch coverage
 Resume file: None
