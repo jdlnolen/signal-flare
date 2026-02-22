@@ -10,10 +10,7 @@ const VERSION = "0.1.0";
 
 const program = new Command();
 
-program
-  .name("signal-flare")
-  .description("Bridge Claude Code and Slack")
-  .version(VERSION);
+program.name("signal-flare").description("Bridge Claude Code and Slack").version(VERSION);
 
 program
   .command("setup")

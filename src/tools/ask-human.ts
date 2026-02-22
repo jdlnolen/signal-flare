@@ -20,22 +20,10 @@ import { pollForReply, sleep } from "../slack/poller.js";
  */
 const AskHumanInputSchema = {
   question: z.string().min(1).describe("The question to ask the human"),
-  context: z
-    .string()
-    .optional()
-    .describe("File path, error message, or code snippet for context"),
-  options: z
-    .array(z.string())
-    .optional()
-    .describe("Numbered options for the human to choose from"),
-  urgency: z
-    .enum(["high", "normal", "low"])
-    .optional()
-    .default("normal"),
-  session_id: z
-    .string()
-    .optional()
-    .describe("Session identifier for thread continuity"),
+  context: z.string().optional().describe("File path, error message, or code snippet for context"),
+  options: z.array(z.string()).optional().describe("Numbered options for the human to choose from"),
+  urgency: z.enum(["high", "normal", "low"]).optional().default("normal"),
+  session_id: z.string().optional().describe("Session identifier for thread continuity"),
 };
 
 /**
@@ -88,7 +76,7 @@ export function registerAskHumanTool(
       inputSchema: AskHumanInputSchema,
     },
     async (args) => {
-      const { question, context, options, urgency, session_id: _sessionId } = args;
+      const { question, context, options, urgency } = args;
 
       // Optional send delay (for testing or rate limiting)
       if (config.SEND_DELAY_MS > 0) {
@@ -197,13 +185,7 @@ export function registerAskHumanTool(
         }
 
         // Reply came in during second poll window
-        return buildSuccessResponse(
-          secondPoll,
-          options,
-          postStart,
-          slackClient,
-          threadTs
-        );
+        return buildSuccessResponse(secondPoll, options, postStart, slackClient, threadTs);
       }
 
       // Reply came in during first poll window

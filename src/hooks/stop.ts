@@ -55,9 +55,7 @@ export async function handleStop(
 ): Promise<void> {
   // Belt-and-suspenders: prevent infinite loop if stop_hook_active is true
   if (input.stop_hook_active) {
-    console.error(
-      "[signal-flare hook] stop_hook_active=true — skipping to prevent infinite loop"
-    );
+    console.error("[signal-flare hook] stop_hook_active=true — skipping to prevent infinite loop");
     return;
   }
 

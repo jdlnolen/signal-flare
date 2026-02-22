@@ -105,9 +105,7 @@ export function buildQuestionMessage(
 
   // Options block: numbered list with reply instructions
   if (params.options && params.options.length > 0) {
-    const numberedList = params.options
-      .map((opt, idx) => `*${idx + 1}.* ${opt}`)
-      .join("\n");
+    const numberedList = params.options.map((opt, idx) => `*${idx + 1}.* ${opt}`).join("\n");
     const optionsBlock: SectionBlock = {
       type: "section",
       text: {
@@ -195,9 +193,7 @@ export interface HookMessageOptions {
  *   - Section block (if body provided)
  *   - Divider
  */
-export function buildHookMessage(
-  opts: HookMessageOptions
-): { attachments: MessageAttachment[] } {
+export function buildHookMessage(opts: HookMessageOptions): { attachments: MessageAttachment[] } {
   const labelConfig = HOOK_LABEL_CONFIG[opts.label];
   const blocks: KnownBlock[] = [];
 

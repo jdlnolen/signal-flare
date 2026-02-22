@@ -43,9 +43,7 @@ export async function runTest(): Promise<void> {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`Failed to send test notification: ${message}`);
-    console.error(
-      "\nTroubleshooting tips:"
-    );
+    console.error("\nTroubleshooting tips:");
     console.error("  - Check that your SLACK_BOT_TOKEN is valid (run signal-flare setup)");
     console.error("  - Check that your SLACK_CHANNEL_ID is correct and the bot is in the channel");
     console.error("  - Ensure the bot has the chat:write permission scope");

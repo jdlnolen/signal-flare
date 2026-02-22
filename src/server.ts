@@ -16,10 +16,7 @@ import { registerAskHumanTool } from "./tools/ask-human.js";
     const slackClient = await createSlackClient(config);
 
     // Create MCP server instance
-    const server = new McpServer(
-      { name: "signal-flare", version: "0.1.0" },
-      { capabilities: {} }
-    );
+    const server = new McpServer({ name: "signal-flare", version: "0.1.0" }, { capabilities: {} });
 
     // Register the ask_human_via_slack tool
     registerAskHumanTool(server, slackClient, config);

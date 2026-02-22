@@ -104,9 +104,7 @@ export const PermissionRequestInputSchema = z.object({
   hook_event_name: z.literal("PermissionRequest"),
   tool_name: z.string(),
   tool_input: z.record(z.unknown()),
-  permission_suggestions: z
-    .array(z.object({ type: z.string(), tool: z.string() }))
-    .optional(),
+  permission_suggestions: z.array(z.object({ type: z.string(), tool: z.string() })).optional(),
 });
 
 /** Inferred TypeScript type for Stop hook input. */

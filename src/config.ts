@@ -11,9 +11,7 @@ const ConfigSchema = z.object({
   SLACK_BOT_TOKEN: z
     .string()
     .startsWith("xoxb-", { message: "SLACK_BOT_TOKEN must start with 'xoxb-'" }),
-  SLACK_CHANNEL_ID: z
-    .string()
-    .startsWith("C", { message: "SLACK_CHANNEL_ID must start with 'C'" }),
+  SLACK_CHANNEL_ID: z.string().startsWith("C", { message: "SLACK_CHANNEL_ID must start with 'C'" }),
   SLACK_USER_ID: z.string().optional(),
   SEND_DELAY_MS: z.coerce
     .number()
@@ -25,11 +23,7 @@ const ConfigSchema = z.object({
     .int()
     .min(0, { message: "POLL_TIMEOUT_MS must be >= 0" })
     .default(600000),
-  HOOK_IDLE_TIMEOUT_MS: z.coerce
-    .number()
-    .int()
-    .min(0)
-    .default(90000),
+  HOOK_IDLE_TIMEOUT_MS: z.coerce.number().int().min(0).default(90000),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;

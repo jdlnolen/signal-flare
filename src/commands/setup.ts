@@ -31,12 +31,8 @@ export async function runSetup(): Promise<void> {
   console.log("\n=====================================");
   console.log("  Signal Flare Setup");
   console.log("=====================================");
-  console.log(
-    "This wizard will configure Signal Flare to send Slack notifications"
-  );
-  console.log(
-    "when Claude Code needs your input, and bring your response back.\n"
-  );
+  console.log("This wizard will configure Signal Flare to send Slack notifications");
+  console.log("when Claude Code needs your input, and bring your response back.\n");
 
   // Detect existing env vars for pre-filling
   const existingToken = process.env.SLACK_BOT_TOKEN;
@@ -57,9 +53,7 @@ export async function runSetup(): Promise<void> {
 
   if (!validation.valid) {
     console.error(`\nValidation failed: ${validation.error}`);
-    console.error(
-      "Please check your token and channel ID, then run signal-flare setup again."
-    );
+    console.error("Please check your token and channel ID, then run signal-flare setup again.");
     process.exit(1);
   }
 

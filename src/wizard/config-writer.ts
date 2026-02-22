@@ -128,9 +128,7 @@ export function writeHooksConfig(
 
   // PostToolUseFailure hook (async: true — non-blocking)
   const postToolFailureHooks = removeExistingEntries(
-    Array.isArray(hooks["PostToolUseFailure"])
-      ? (hooks["PostToolUseFailure"] as unknown[])
-      : []
+    Array.isArray(hooks["PostToolUseFailure"]) ? (hooks["PostToolUseFailure"] as unknown[]) : []
   );
   postToolFailureHooks.push({ command: hookCommand, async: true });
   hooks["PostToolUseFailure"] = postToolFailureHooks;

@@ -14,10 +14,7 @@ import { buildHookMessage } from "../slack/messages.js";
  * - MCP tools (name contains mcp__): returns first 3 keys as JSON (truncated to 300 chars)
  * - Default: returns JSON.stringify of tool input (truncated to 300 chars)
  */
-export function extractToolContext(
-  toolName: string,
-  toolInput: Record<string, unknown>
-): string {
+export function extractToolContext(toolName: string, toolInput: Record<string, unknown>): string {
   if (toolName === "Bash") {
     const command = (toolInput.command as string) ?? "";
     return command.length > 500 ? command.substring(0, 500) + "..." : command;
@@ -50,13 +47,14 @@ export async function handlePostToolUseFailure(
   slackClient: SlackClient,
   config: Config
 ): Promise<void> {
-  const toolContext = extractToolContext(input.tool_name, input.tool_input as Record<string, unknown>);
+  const toolContext = extractToolContext(
+    input.tool_name,
+    input.tool_input as Record<string, unknown>
+  );
 
   // Truncate error text to 1000 chars
   const errorText =
-    input.error.length > 1000
-      ? input.error.substring(0, 1000) + "..."
-      : input.error;
+    input.error.length > 1000 ? input.error.substring(0, 1000) + "..." : input.error;
 
   const payload = buildHookMessage({
     label: "ERROR",

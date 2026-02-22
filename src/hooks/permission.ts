@@ -17,10 +17,7 @@ import { buildHookMessage } from "../slack/messages.js";
  * - Read: "Read: <file_path>"
  * - Default: "<toolName> — <JSON of toolInput>" (truncated to 200 chars)
  */
-function extractActionDescription(
-  toolName: string,
-  toolInput: Record<string, unknown>
-): string {
+function extractActionDescription(toolName: string, toolInput: Record<string, unknown>): string {
   if (toolName === "Bash") {
     const desc = "Run: " + ((toolInput.command as string) ?? "unknown command");
     return desc.length > 300 ? desc.substring(0, 300) + "..." : desc;
@@ -47,23 +44,14 @@ function extractActionDescription(
  * Best-effort: if spawn fails, logs to stderr but does not throw — the Slack
  * notification was already sent.
  */
-export function spawnWatcher(
-  transcriptPath: string,
-  threadTs: string,
-  channelId: string,
-  config: Config
-): void {
+export function spawnWatcher(transcriptPath: string, threadTs: string, channelId: string): void {
   try {
     const watcherPath = fileURLToPath(new URL("./watcher.js", import.meta.url));
-    const child = spawn(
-      process.execPath,
-      [watcherPath, transcriptPath, threadTs, channelId],
-      {
-        detached: true,
-        stdio: "ignore",
-        env: process.env,
-      }
-    );
+    const child = spawn(process.execPath, [watcherPath, transcriptPath, threadTs, channelId], {
+      detached: true,
+      stdio: "ignore",
+      env: process.env,
+    });
     child.unref();
   } catch (err) {
     console.error("[signal-flare hook] Failed to spawn watcher process:", err);
@@ -95,8 +83,7 @@ export async function handlePermissionRequest(
   let payload: { attachments: import("@slack/types").MessageAttachment[] };
 
   if (isAskHuman) {
-    const question =
-      (input.tool_input.question as string) ?? "Question from Claude";
+    const question = (input.tool_input.question as string) ?? "Question from Claude";
     const options = input.tool_input.options as string[] | undefined;
 
     let body: string | undefined;
@@ -134,7 +121,7 @@ export async function handlePermissionRequest(
 
     // Spawn watcher to monitor for terminal response (best-effort)
     if (postResult.ok && postResult.ts) {
-      spawnWatcher(input.transcript_path, postResult.ts, slackClient.channelId, config);
+      spawnWatcher(input.transcript_path, postResult.ts, slackClient.channelId);
     }
   } catch (err) {
     console.error("[signal-flare hook] Failed to post PERMISSION/QUESTION notification:", err);

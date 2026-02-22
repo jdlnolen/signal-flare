@@ -158,9 +158,7 @@ export async function runStatus(): Promise<void> {
 /**
  * Checks if a hooks object contains any Signal Flare entries.
  */
-function checkHooksForSignalFlare(
-  hooks: Record<string, unknown[]> | undefined
-): boolean {
+function checkHooksForSignalFlare(hooks: Record<string, unknown[]> | undefined): boolean {
   if (!hooks) return false;
   for (const entries of Object.values(hooks)) {
     if (!Array.isArray(entries)) continue;

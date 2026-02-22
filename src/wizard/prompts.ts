@@ -8,9 +8,7 @@ import { input, password, select, confirm } from "@inquirer/prompts";
  */
 export function ensureTTY(): void {
   if (!process.stdin.isTTY) {
-    console.error(
-      "signal-flare setup requires an interactive terminal. Run without piping."
-    );
+    console.error("signal-flare setup requires an interactive terminal. Run without piping.");
     process.exit(1);
   }
 }
@@ -22,9 +20,7 @@ export function ensureTTY(): void {
  */
 export async function promptForToken(existing?: string): Promise<string> {
   ensureTTY();
-  const hint = existing
-    ? ` (current: xoxb-****...${existing.slice(-4)})`
-    : "";
+  const hint = existing ? ` (current: xoxb-****...${existing.slice(-4)})` : "";
   const token = await password({
     message: `Enter your Slack Bot Token (xoxb-...):${hint}`,
     mask: "*",

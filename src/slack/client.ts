@@ -31,9 +31,7 @@ export async function createSlackClient(config: Config): Promise<SlackClient> {
   try {
     const authResult = await web.auth.test();
     if (!authResult.ok || !authResult.user_id) {
-      throw new Error(
-        `auth.test() returned ok=${authResult.ok}, user_id=${authResult.user_id}`
-      );
+      throw new Error(`auth.test() returned ok=${authResult.ok}, user_id=${authResult.user_id}`);
     }
     botUserId = authResult.user_id;
   } catch (err) {
