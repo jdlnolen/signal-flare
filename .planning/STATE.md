@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 2 (Claude Code Hooks Integration) — Plans 01 and 02 complete, Plan 03 is next
+**Current focus:** Phase 3 (npm Packaging and Setup Wizard) — Plan 01 complete, Plans 02 and 03 are next
 
 ## Current Position
 
-Phase: 2 of 4 (Hook Integration) — IN PROGRESS
-Plan: 2 of 3 in current phase — COMPLETE
-Status: Phase 2 Plan 02 complete — full hook pipeline implementation ready (dist/hook-handler.js + dist/hooks/watcher.js)
-Last activity: 2026-02-22 — Completed Plan 02-02 (hook entry point, router, Stop/PostToolUseFailure/PermissionRequest handlers, detached background watcher)
+Phase: 3 of 4 (npm Packaging and Setup Wizard) — IN PROGRESS
+Plan: 1 of 3 in current phase — COMPLETE
+Status: Phase 3 Plan 01 complete — CLI binary, dotenv integration, and package.json packaging preparation done
+Last activity: 2026-02-22 — Completed Plan 03-01 (CLI entry point, dotenv config loading, four-entry tsup build)
 
-Progress: [████░░░░░░] 40%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 7 min
-- Total execution time: 28 min
+- Total plans completed: 5
+- Average duration: 6 min
+- Total execution time: 31 min
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [████░░░░░░] 40%
 |-------|-------|-------|----------|
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
 | 02-hook-integration | 2 | 10 min | 5 min |
+| 03-npm-packaging-and-setup-wizard | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 7 min avg
-- Trend: Consistent
+- Last 5 plans: 5 min avg
+- Trend: Accelerating
 
 *Updated after each plan completion*
 
@@ -63,6 +64,9 @@ Recent decisions affecting current work:
 - [Phase 02-02]: stop_hook_active guard in handleStop prevents infinite hook loop
 - [Phase 02-02]: isAskHuman uses .includes('ask_human_via_slack') not exact match — handles MCP naming convention
 - [Phase 02-02]: Watcher logs to ~/.claude/signal-flare-watcher.log — detached stdio:ignore makes stderr invisible
+- [03-01]: CLI shebang handled by tsup banner only — literal shebang in src/cli.ts causes double-shebang breaking ESM loading
+- [03-01]: dotenv.config({ quiet: true }) used to suppress dotenv v17 verbose output in MCP server context
+- [03-01]: resolveEnvFilePath() is synchronous (readFileSync at startup); SIGNAL_FLARE_ENV_FILE > ~/.config/signal-flare/config.json fallback
 
 ### Pending Todos
 
@@ -76,5 +80,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 02-02-PLAN.md — full hook pipeline implementation complete, ready for Phase 2 Plan 03
+Stopped at: Completed 03-01-PLAN.md — CLI binary, dotenv integration, package.json packaging prep done, ready for Phase 3 Plan 02
 Resume file: None
