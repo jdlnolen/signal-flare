@@ -6,6 +6,20 @@ import type { SlackClient } from "../slack/client.js";
 import type { Config } from "../config.js";
 import type { PostToolUseFailureInput } from "../types.js";
 
+// Type helper for accessing Slack Block Kit fields without strict API type constraints
+type SlackCallArgs = {
+  channel: string;
+  text: string;
+  attachments: Array<{
+    color: string;
+    blocks: Array<{ type: string; text?: { type?: string; text: string } }>;
+  }>;
+};
+
+function getCallArgs(mockFn: ReturnType<typeof vi.fn>): SlackCallArgs {
+  return mockFn.mock.calls[0][0] as unknown as SlackCallArgs;
+}
+
 // ---------------------------------------------------------------------------
 // Test fixtures
 // ---------------------------------------------------------------------------
@@ -136,32 +150,31 @@ describe("handlePostToolUseFailure", () => {
   it("sends to the correct channel", async () => {
     const slackClient = makeMockSlackClient();
     await handlePostToolUseFailure(baseInput, slackClient, mockConfig);
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     expect(callArgs.channel).toBe("C12345678");
   });
 
   it("text mentions the tool name", async () => {
     const slackClient = makeMockSlackClient();
     await handlePostToolUseFailure(baseInput, slackClient, mockConfig);
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     expect(callArgs.text).toContain("Bash");
   });
 
   it("attachments have orange color bar (ERROR notification)", async () => {
     const slackClient = makeMockSlackClient();
     await handlePostToolUseFailure(baseInput, slackClient, mockConfig);
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     expect(callArgs.attachments[0].color).toBe("#FFA500");
   });
 
   it("error text appears in the attachments body", async () => {
     const slackClient = makeMockSlackClient();
     await handlePostToolUseFailure(baseInput, slackClient, mockConfig);
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     const blocks = callArgs.attachments[0].blocks;
     const bodySection = blocks.find(
-      (b: { type: string; text?: { text: string } }) =>
-        b.type === "section" && b.text?.text === "No such file or directory"
+      (b) => b.type === "section" && b.text?.text === "No such file or directory"
     );
     expect(bodySection).toBeDefined();
   });
@@ -173,11 +186,11 @@ describe("handlePostToolUseFailure", () => {
 
     await handlePostToolUseFailure(input, slackClient, mockConfig);
 
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     const blocks = callArgs.attachments[0].blocks;
     // The body section is the section block whose text matches the (truncated) error content.
     // The headline section contains "Bash failed"; the body section contains the error text.
-    const sectionBlocks = blocks.filter((b: { type: string }) => b.type === "section");
+    const sectionBlocks = blocks.filter((b) => b.type === "section");
     // body is the last section block (after headline)
     const bodySection = sectionBlocks[sectionBlocks.length - 1];
     const errorText = bodySection?.text?.text ?? "";
@@ -191,11 +204,10 @@ describe("handlePostToolUseFailure", () => {
 
     await handlePostToolUseFailure(baseInput, slackClient, configWithUser);
 
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     const blocks = callArgs.attachments[0].blocks;
     const headlineSection = blocks.find(
-      (b: { type: string; text?: { text: string } }) =>
-        b.type === "section" && b.text?.text?.includes("Bash failed")
+      (b) => b.type === "section" && b.text?.text?.includes("Bash failed")
     );
     expect(headlineSection?.text?.text).toContain("<@U99999999>");
   });

@@ -118,7 +118,7 @@ describe("pollForReply", () => {
     // Only the root message — no replies
     const emptyThread = [{ ts: THREAD_TS, text: "Question posted", bot_id: "B_APP" }];
 
-    const client = createMockWebClient([{ emptyThread }]);
+    const client = createMockWebClient([{ messages: emptyThread }]);
     // Use a very short timeout to keep test fast
     const result = await pollForReply(client, CHANNEL_ID, THREAD_TS, BOT_USER_ID, 30, FAST_OPTS);
 

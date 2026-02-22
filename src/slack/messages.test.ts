@@ -14,6 +14,19 @@ import {
 } from "./messages.js";
 import type { AskHumanParams } from "../types.js";
 
+// Type helpers for accessing Slack Block Kit fields without strict union type constraints.
+// Slack's @slack/types defines Block as a large union type — casting is needed to access
+// subtype-specific properties after narrowing by .type.
+type AnyBlock = {
+  type: string;
+  text?: { type?: string; text: string; emoji?: boolean };
+  elements?: Array<{
+    type: string;
+    elements?: Array<{ type: string; text?: string }>;
+    text?: string;
+  }>;
+};
+
 // ---------------------------------------------------------------------------
 // buildQuestionMessage
 // ---------------------------------------------------------------------------
@@ -39,17 +52,17 @@ describe("buildQuestionMessage", () => {
 
   it("first block is a header block with question text", () => {
     const result = buildQuestionMessage(baseParams);
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const header = blocks[0];
     expect(header.type).toBe("header");
     if (header.type === "header") {
-      expect(header.text.text).toContain("Claude needs your input");
+      expect(header.text!.text).toContain("Claude needs your input");
     }
   });
 
   it("second block is a section block containing the question text", () => {
     const result = buildQuestionMessage(baseParams);
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const section = blocks[1];
     expect(section.type).toBe("section");
     if (section.type === "section") {
@@ -59,7 +72,7 @@ describe("buildQuestionMessage", () => {
 
   it("includes @mention prefix in section when userId is provided", () => {
     const result = buildQuestionMessage(baseParams, "U12345678");
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const section = blocks[1];
     if (section.type === "section") {
       expect(section.text?.text).toContain("<@U12345678>");
@@ -68,7 +81,7 @@ describe("buildQuestionMessage", () => {
 
   it("does not include @mention prefix in section when userId is omitted", () => {
     const result = buildQuestionMessage(baseParams);
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const section = blocks[1];
     if (section.type === "section") {
       expect(section.text?.text).not.toContain("<@");
@@ -97,14 +110,14 @@ describe("buildQuestionMessage", () => {
 
   it("includes a rich_text block with preformatted context when context is provided", () => {
     const result = buildQuestionMessage({ ...baseParams, context: "some code here" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const richTextBlock = blocks.find((b) => b.type === "rich_text");
     expect(richTextBlock).toBeDefined();
     if (richTextBlock && richTextBlock.type === "rich_text") {
-      const preformatted = richTextBlock.elements[0];
+      const preformatted = richTextBlock.elements![0];
       expect(preformatted.type).toBe("rich_text_preformatted");
       if (preformatted.type === "rich_text_preformatted") {
-        expect(preformatted.elements[0]).toMatchObject({
+        expect(preformatted.elements![0]).toMatchObject({
           type: "text",
           text: "some code here",
         });
@@ -114,14 +127,14 @@ describe("buildQuestionMessage", () => {
 
   it("does not include a rich_text block when context is omitted", () => {
     const result = buildQuestionMessage(baseParams);
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const richTextBlock = blocks.find((b) => b.type === "rich_text");
     expect(richTextBlock).toBeUndefined();
   });
 
   it("includes a numbered options list in a section block when options are provided", () => {
     const result = buildQuestionMessage({ ...baseParams, options: ["Option A", "Option B"] });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     // Find a section block (after the question section) that contains the numbered list
     const optionsBlock = blocks.filter((b) => b.type === "section").find((b) => {
       if (b.type === "section") {
@@ -138,7 +151,7 @@ describe("buildQuestionMessage", () => {
 
   it("does not include an options section block when options are omitted", () => {
     const result = buildQuestionMessage(baseParams);
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     // Only the question section should be present; no options list
     const sectionBlocks = blocks.filter((b) => b.type === "section");
     expect(sectionBlocks).toHaveLength(1);
@@ -146,7 +159,7 @@ describe("buildQuestionMessage", () => {
 
   it("last block is a divider", () => {
     const result = buildQuestionMessage(baseParams);
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const lastBlock = blocks[blocks.length - 1];
     expect(lastBlock.type).toBe("divider");
   });
@@ -173,44 +186,44 @@ describe("buildHookMessage", () => {
 
   it("COMPLETED notification: header contains 'Task Completed' text", () => {
     const result = buildHookMessage({ label: "COMPLETED", headline: "Done." });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const header = blocks[0];
     expect(header.type).toBe("header");
     if (header.type === "header") {
-      expect(header.text.text).toContain("Task Completed");
+      expect(header.text!.text).toContain("Task Completed");
     }
   });
 
   it("ERROR notification: header contains 'Tool Error' text", () => {
     const result = buildHookMessage({ label: "ERROR", headline: "Bash failed" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const header = blocks[0];
     if (header.type === "header") {
-      expect(header.text.text).toContain("Tool Error");
+      expect(header.text!.text).toContain("Tool Error");
     }
   });
 
   it("QUESTION notification: header contains 'Claude needs your input' text", () => {
     const result = buildHookMessage({ label: "QUESTION", headline: "What?" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const header = blocks[0];
     if (header.type === "header") {
-      expect(header.text.text).toContain("Claude needs your input");
+      expect(header.text!.text).toContain("Claude needs your input");
     }
   });
 
   it("PERMISSION notification: header contains 'Permission Needed' text", () => {
     const result = buildHookMessage({ label: "PERMISSION", headline: "Allow Bash?" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const header = blocks[0];
     if (header.type === "header") {
-      expect(header.text.text).toContain("Permission Needed");
+      expect(header.text!.text).toContain("Permission Needed");
     }
   });
 
   it("headline appears as bold text in the section block", () => {
     const result = buildHookMessage({ label: "COMPLETED", headline: "Task is done!" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const section = blocks[1];
     expect(section.type).toBe("section");
     if (section.type === "section") {
@@ -220,7 +233,7 @@ describe("buildHookMessage", () => {
 
   it("includes @mention in headline section when userId is provided", () => {
     const result = buildHookMessage({ label: "COMPLETED", headline: "Done.", userId: "U99999" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const section = blocks[1];
     if (section.type === "section") {
       expect(section.text?.text).toContain("<@U99999>");
@@ -229,7 +242,7 @@ describe("buildHookMessage", () => {
 
   it("does not include @mention when userId is omitted", () => {
     const result = buildHookMessage({ label: "COMPLETED", headline: "Done." });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const section = blocks[1];
     if (section.type === "section") {
       expect(section.text?.text).not.toContain("<@");
@@ -238,27 +251,27 @@ describe("buildHookMessage", () => {
 
   it("includes a rich_text preformatted block when context is provided", () => {
     const result = buildHookMessage({ label: "ERROR", headline: "Bash failed", context: "ls -la" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const richText = blocks.find((b) => b.type === "rich_text");
     expect(richText).toBeDefined();
     if (richText && richText.type === "rich_text") {
-      const preformatted = richText.elements[0];
+      const preformatted = richText.elements![0];
       expect(preformatted.type).toBe("rich_text_preformatted");
       if (preformatted.type === "rich_text_preformatted") {
-        expect(preformatted.elements[0]).toMatchObject({ type: "text", text: "ls -la" });
+        expect(preformatted.elements![0]).toMatchObject({ type: "text", text: "ls -la" });
       }
     }
   });
 
   it("does not include a rich_text block when context is omitted", () => {
     const result = buildHookMessage({ label: "COMPLETED", headline: "Done." });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     expect(blocks.find((b) => b.type === "rich_text")).toBeUndefined();
   });
 
   it("includes a body section block when body is provided", () => {
     const result = buildHookMessage({ label: "ERROR", headline: "Fail", body: "Error details here" });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const bodySection = blocks.filter((b) => b.type === "section").find((b) => {
       if (b.type === "section") {
         return b.text?.text === "Error details here";
@@ -270,7 +283,7 @@ describe("buildHookMessage", () => {
 
   it("does not include a body section block when body is omitted", () => {
     const result = buildHookMessage({ label: "COMPLETED", headline: "Done." });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     const sectionBlocks = blocks.filter((b) => b.type === "section");
     // Only the headline section should be present
     expect(sectionBlocks).toHaveLength(1);
@@ -278,7 +291,7 @@ describe("buildHookMessage", () => {
 
   it("last block is always a divider", () => {
     const result = buildHookMessage({ label: "COMPLETED", headline: "Done." });
-    const blocks = result.attachments[0].blocks!;
+    const blocks = result.attachments[0].blocks as unknown as AnyBlock[];
     expect(blocks[blocks.length - 1].type).toBe("divider");
   });
 });

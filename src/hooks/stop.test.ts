@@ -6,6 +6,20 @@ import type { SlackClient } from "../slack/client.js";
 import type { Config } from "../config.js";
 import type { StopHookInput } from "../types.js";
 
+// Type helper for accessing Slack Block Kit fields without strict API type constraints
+type SlackCallArgs = {
+  channel: string;
+  text: string;
+  attachments: Array<{
+    color: string;
+    blocks: Array<{ type: string; text?: { type?: string; text: string } }>;
+  }>;
+};
+
+function getCallArgs(mockFn: ReturnType<typeof vi.fn>): SlackCallArgs {
+  return mockFn.mock.calls[0][0] as unknown as SlackCallArgs;
+}
+
 // ---------------------------------------------------------------------------
 // Test fixtures
 // ---------------------------------------------------------------------------
@@ -117,7 +131,7 @@ describe("handleStop", () => {
     await handleStop(baseInput, slackClient, mockConfig);
 
     expect(slackClient.web.chat.postMessage).toHaveBeenCalledOnce();
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     expect(callArgs.text).toBe("All tasks completed successfully.");
     expect(callArgs.channel).toBe("C12345678");
   });
@@ -126,7 +140,7 @@ describe("handleStop", () => {
     const slackClient = makeMockSlackClient();
     await handleStop(baseInput, slackClient, mockConfig);
 
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     // buildHookMessage always uses #FFA500 for hook notifications
     expect(callArgs.attachments).toBeDefined();
     expect(callArgs.attachments[0].color).toBe("#FFA500");
@@ -146,13 +160,11 @@ describe("handleStop", () => {
 
     await handleStop(baseInput, slackClient, configWithUser);
 
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     // The headline section in attachments should include the @mention
     const blocks = callArgs.attachments[0].blocks;
-    const headlineSection = blocks.find(
-      (b: { type: string }) => b.type === "section"
-    );
-    expect(headlineSection.text.text).toContain("<@U99999999>");
+    const headlineSection = blocks.find((b) => b.type === "section");
+    expect(headlineSection?.text?.text).toContain("<@U99999999>");
   });
 
   it("does not throw when Slack API call rejects", async () => {
@@ -186,7 +198,7 @@ describe("handleStop", () => {
 
     await handleStop(input, slackClient, mockConfig);
 
-    const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
+    const callArgs = getCallArgs(vi.mocked(slackClient.web.chat.postMessage));
     // extractSummary takes only the first sentence
     expect(callArgs.text).toBe("Refactored the database schema.");
   });

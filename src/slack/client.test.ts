@@ -34,9 +34,9 @@ describe("createSlackClient", () => {
       _token: "",
       auth: { test: vi.fn() },
     };
-    vi.mocked(WebClient).mockImplementation((token: string) => {
+    (vi.mocked(WebClient) as any).mockImplementation((token: string) => {
       mockWebClientInstance._token = token;
-      return mockWebClientInstance as unknown as InstanceType<typeof WebClient>;
+      return mockWebClientInstance;
     });
   });
 
@@ -95,10 +95,10 @@ describe("createSlackClient", () => {
 describe("createSlackClientDirect", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(WebClient).mockImplementation((token: string) => ({
+    (vi.mocked(WebClient) as any).mockImplementation((token: string) => ({
       _token: token,
       auth: { test: vi.fn() },
-    }) as unknown as InstanceType<typeof WebClient>);
+    }));
   });
 
   it("sets botUserId to empty string", () => {
