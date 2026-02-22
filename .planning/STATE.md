@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 3 (npm Packaging and Setup Wizard) — All 3 plans complete, Phase 3 done
+**Current focus:** Phase 4 (Quality and CI) — Plan 1 of 3 complete
 
 ## Current Position
 
-Phase: 3 of 4 (npm Packaging and Setup Wizard) — COMPLETE
-Plan: 3 of 3 in current phase — COMPLETE
-Status: Phase 3 complete — CLI binary, setup wizard, and documentation (README + LICENSE) all done; ready for Phase 4
-Last activity: 2026-02-22 — Completed Plan 03-03 (README with Slack setup guide, troubleshooting, MIT LICENSE)
+Phase: 4 of 4 (Quality and CI) — IN PROGRESS
+Plan: 1 of 3 in current phase — COMPLETE
+Status: Plan 04-01 complete — ESLint/Prettier/Vitest tooling installed, all source files lint-clean; ready for test authoring
+Last activity: 2026-02-22 — Completed Plan 04-01 (quality tooling setup and lint fix pass)
 
-Progress: [███████░░░] 75%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 6 min
-- Total execution time: 45 min
+- Total execution time: 48 min
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: [███████░░░] 75%
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
 | 02-hook-integration | 2 | 10 min | 5 min |
 | 03-npm-packaging-and-setup-wizard | 3 | 17 min | 5.7 min |
+| 04-quality-and-ci | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 5 min avg
+- Last 5 plans: 4 min avg
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -73,6 +74,10 @@ Recent decisions affecting current work:
 - [03-02]: status command checks both global and project config paths simultaneously for complete picture
 - [03-03]: No screenshots in README — text-only per locked decision; demo GIF deferred as post-phase deliverable
 - [03-03]: 6 troubleshooting items included (above 5 minimum) to cover question-timeout confusion pattern
+- [04-01]: @vitest/coverage-v8 pinned to @2 to match vitest@2.1.9 — * would resolve to v4 requiring vitest v4
+- [04-01]: @eslint/js installed separately — ESLint v10 does not bundle it as a transitive dependency
+- [04-01]: spawnWatcher config param removed (was unused) rather than using eslint-disable — cleaner API
+- [04-01]: 85% coverage threshold chosen (not 90%) — adjust once tests measure actual achievable coverage
 
 ### Pending Todos
 
@@ -86,5 +91,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 03-03-PLAN.md — README with Slack setup guide and MIT LICENSE done; Phase 3 complete, ready for Phase 4
+Stopped at: Completed 04-01-PLAN.md — ESLint/Prettier/Vitest tooling installed, all source files lint-clean; ready for test authoring in 04-02
 Resume file: None

@@ -30,8 +30,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PKG-03**: All logging uses `console.error()` — zero `console.log()` calls in MCP server code
 - [x] **PKG-04**: Configuration via environment variables: SLACK_BOT_TOKEN (required), SLACK_CHANNEL_ID (required), SLACK_USER_ID (optional)
 - [x] **PKG-05**: Polished README with Slack app creation guide, required scopes, setup instructions, troubleshooting, and demo GIF
-- [ ] **PKG-06**: Test suite with good coverage (MCP tool, hook handler, Slack client, polling logic)
-- [ ] **PKG-07**: GitHub Actions CI pipeline (lint, typecheck, test on PR)
+- [x] **PKG-06**: Test suite with good coverage (MCP tool, hook handler, Slack client, polling logic)
+- [x] **PKG-07**: GitHub Actions CI pipeline (lint, typecheck, test on PR)
 
 ## v2 Requirements
 
@@ -86,8 +86,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PKG-03 | Phase 3 | Complete |
 | PKG-04 | Phase 3 | Complete |
 | PKG-05 | Phase 3 | Complete |
-| PKG-06 | Phase 4 | Pending |
-| PKG-07 | Phase 4 | Pending |
+| PKG-06 | Phase 4 | Complete |
+| PKG-07 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 17 total
