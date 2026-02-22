@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 2 (Claude Code Hooks Integration) — Plan 01 complete, Plan 02 is next
+**Current focus:** Phase 2 (Claude Code Hooks Integration) — Plans 01 and 02 complete, Plan 03 is next
 
 ## Current Position
 
 Phase: 2 of 4 (Hook Integration) — IN PROGRESS
-Plan: 1 of 3 in current phase — COMPLETE
-Status: Phase 2 Plan 01 complete — hook infrastructure foundations ready
-Last activity: 2026-02-22 — Completed Plan 02-01 (hook input schemas, fast Slack client, unified message builder, multi-entry build)
+Plan: 2 of 3 in current phase — COMPLETE
+Status: Phase 2 Plan 02 complete — full hook pipeline implementation ready (dist/hook-handler.js + dist/hooks/watcher.js)
+Last activity: 2026-02-22 — Completed Plan 02-02 (hook entry point, router, Stop/PostToolUseFailure/PermissionRequest handlers, detached background watcher)
 
-Progress: [███░░░░░░░] 30%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 9 min
-- Total execution time: 26 min
+- Total plans completed: 4
+- Average duration: 7 min
+- Total execution time: 28 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
-| 02-hook-integration | 1 | 8 min | 8 min |
+| 02-hook-integration | 2 | 10 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 9 min avg
+- Last 5 plans: 7 min avg
 - Trend: Consistent
 
 *Updated after each plan completion*
@@ -59,6 +59,10 @@ Recent decisions affecting current work:
 - [02-01]: HookInputSchema uses z.discriminatedUnion on hook_event_name for correct type narrowing per event type
 - [02-01]: buildHookMessage uses orange (#FFA500) for all hook notification types — locked decision (not distinct colors per type)
 - [02-01]: tsup banner kept unchanged — shebang on watcher.ts is harmless since it's invoked via node explicitly
+- [Phase 02-02]: extractSummary uses first sentence (split on [.!?] + whitespace) truncated to 200 chars — matches locked one-line summary decision
+- [Phase 02-02]: stop_hook_active guard in handleStop prevents infinite hook loop
+- [Phase 02-02]: isAskHuman uses .includes('ask_human_via_slack') not exact match — handles MCP naming convention
+- [Phase 02-02]: Watcher logs to ~/.claude/signal-flare-watcher.log — detached stdio:ignore makes stderr invisible
 
 ### Pending Todos
 
@@ -72,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 02-01-PLAN.md — hook infrastructure foundations ready for Plan 02 handler implementation
+Stopped at: Completed 02-02-PLAN.md — full hook pipeline implementation complete, ready for Phase 2 Plan 03
 Resume file: None

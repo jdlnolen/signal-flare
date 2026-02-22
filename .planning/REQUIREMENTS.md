@@ -18,10 +18,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Hook Integration
 
-- [ ] **HOOK-01**: PermissionRequest hook detects when Claude calls AskUserQuestion and extracts question text and options
-- [ ] **HOOK-02**: Idle timer (configurable, default 90s) delays Slack escalation — only posts to Slack if user hasn't responded in terminal
-- [ ] **HOOK-03**: Stop hook sends task completion notification to Slack with last assistant message summary (async, non-blocking)
-- [ ] **HOOK-04**: PostToolUseFailure hook sends error notification to Slack with error text and tool name (async, non-blocking)
+- [x] **HOOK-01**: PermissionRequest hook detects when Claude calls AskUserQuestion and extracts question text and options
+- [x] **HOOK-02**: Idle timer (configurable, default 90s) delays Slack escalation — only posts to Slack if user hasn't responded in terminal
+- [x] **HOOK-03**: Stop hook sends task completion notification to Slack with last assistant message summary (async, non-blocking)
+- [x] **HOOK-04**: PostToolUseFailure hook sends error notification to Slack with error text and tool name (async, non-blocking)
 
 ### Packaging & Distribution
 
@@ -77,10 +77,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SLCK-04 | Phase 1 | Complete |
 | SLCK-05 | Phase 1 | Complete |
 | SLCK-06 | Phase 1 | Complete |
-| HOOK-01 | Phase 2 | Pending |
-| HOOK-02 | Phase 2 | Pending |
-| HOOK-03 | Phase 2 | Pending |
-| HOOK-04 | Phase 2 | Pending |
+| HOOK-01 | Phase 2 | Complete |
+| HOOK-02 | Phase 2 | Complete |
+| HOOK-03 | Phase 2 | Complete |
+| HOOK-04 | Phase 2 | Complete |
 | PKG-01 | Phase 3 | Pending |
 | PKG-02 | Phase 3 | Pending |
 | PKG-03 | Phase 3 | Pending |
