@@ -175,8 +175,11 @@ describe("handlePostToolUseFailure", () => {
 
     const callArgs = vi.mocked(slackClient.web.chat.postMessage).mock.calls[0][0];
     const blocks = callArgs.attachments[0].blocks;
-    const bodySection = blocks.find((b: { type: string }) => b.type === "section");
-    // Error body should be truncated
+    // The body section is the section block whose text matches the (truncated) error content.
+    // The headline section contains "Bash failed"; the body section contains the error text.
+    const sectionBlocks = blocks.filter((b: { type: string }) => b.type === "section");
+    // body is the last section block (after headline)
+    const bodySection = sectionBlocks[sectionBlocks.length - 1];
     const errorText = bodySection?.text?.text ?? "";
     expect(errorText.length).toBeLessThanOrEqual(1003); // 1000 + "..."
     expect(errorText.endsWith("...")).toBe(true);

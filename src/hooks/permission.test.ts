@@ -89,16 +89,17 @@ describe("spawnWatcher", () => {
   it("calls spawn with the watcher path, transcriptPath, threadTs, channelId", () => {
     spawnWatcher("/tmp/transcript.json", "111.222", "C12345678");
     expect(mockSpawn).toHaveBeenCalledOnce();
-    const [_execPath, args, options] = mockSpawn.mock.calls[0];
-    expect(args).toContain("/tmp/transcript.json");
-    expect(args).toContain("111.222");
-    expect(args).toContain("C12345678");
-    expect(options.detached).toBe(true);
-    expect(options.stdio).toBe("ignore");
+    // [execPath, args, options]
+    const spawnArgs = mockSpawn.mock.calls[0][1] as string[];
+    const spawnOptions = mockSpawn.mock.calls[0][2] as { detached: boolean; stdio: string };
+    expect(spawnArgs).toContain("/tmp/transcript.json");
+    expect(spawnArgs).toContain("111.222");
+    expect(spawnArgs).toContain("C12345678");
+    expect(spawnOptions.detached).toBe(true);
+    expect(spawnOptions.stdio).toBe("ignore");
   });
 
   it("calls child.unref() to allow parent process to exit", () => {
-    const mockChild = mockSpawn.mock.results[0]?.value;
     spawnWatcher("/tmp/t.json", "ts", "C1");
     // Get the latest child mock
     const latestChild = mockSpawn.mock.results[mockSpawn.mock.results.length - 1].value;
@@ -264,10 +265,10 @@ describe("handlePermissionRequest — ask_human_via_slack tool", () => {
     await handlePermissionRequest(askHumanInput, slackClient, mockConfig);
     expect(mockSpawn).toHaveBeenCalled();
     // Verify watcher receives transcript path and thread ts
-    const [_exec, args] = mockSpawn.mock.calls[0];
-    expect(args).toContain("/tmp/transcript.json");
-    expect(args).toContain("222.333");
-    expect(args).toContain("C12345678");
+    const spawnArgs = mockSpawn.mock.calls[0][1] as string[];
+    expect(spawnArgs).toContain("/tmp/transcript.json");
+    expect(spawnArgs).toContain("222.333");
+    expect(spawnArgs).toContain("C12345678");
   });
 
   it("handles missing options field in tool_input gracefully", async () => {
