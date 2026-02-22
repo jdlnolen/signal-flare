@@ -9,12 +9,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Slack Communication
 
-- [ ] **SLCK-01**: User can send a question to Slack via `ask_human_via_slack` MCP tool and receive a threaded reply back in Claude Code
+- [x] **SLCK-01**: User can send a question to Slack via `ask_human_via_slack` MCP tool and receive a threaded reply back in Claude Code
 - [x] **SLCK-02**: Slack messages use Block Kit formatting with header, context, divider, and urgency color coding (high=red, normal=yellow, low=green)
 - [x] **SLCK-03**: Messages include contextual information (current file path, error text, code snippets) extracted from hook stdin or tool parameters
 - [x] **SLCK-04**: Messages @mention the configured user (SLACK_USER_ID) for push notifications
-- [ ] **SLCK-05**: Thread polling uses exponential backoff (3s initial, 15s cap) and configurable timeout (default 10 minutes)
-- [ ] **SLCK-06**: Timeout posts a "timed out" notice in the Slack thread and returns an error to Claude
+- [x] **SLCK-05**: Thread polling uses exponential backoff (3s initial, 15s cap) and configurable timeout (default 10 minutes)
+- [x] **SLCK-06**: Timeout posts a "timed out" notice in the Slack thread and returns an error to Claude
 
 ### Hook Integration
 
@@ -71,12 +71,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SLCK-01 | Phase 1 | Pending |
+| SLCK-01 | Phase 1 | Complete |
 | SLCK-02 | Phase 1 | Complete |
 | SLCK-03 | Phase 1 | Complete |
 | SLCK-04 | Phase 1 | Complete |
-| SLCK-05 | Phase 1 | Pending |
-| SLCK-06 | Phase 1 | Pending |
+| SLCK-05 | Phase 1 | Complete |
+| SLCK-06 | Phase 1 | Complete |
 | HOOK-01 | Phase 2 | Pending |
 | HOOK-02 | Phase 2 | Pending |
 | HOOK-03 | Phase 2 | Pending |

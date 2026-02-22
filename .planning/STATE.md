@@ -5,32 +5,32 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 1 — Slack Infrastructure and MCP Tool
+**Current focus:** Phase 1 complete — Phase 2 (Claude Code Hooks Integration) is next
 
 ## Current Position
 
-Phase: 1 of 4 (Slack Infrastructure and MCP Tool)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-22 — Completed Plan 01-01 (Project scaffold and foundation modules)
+Phase: 1 of 4 (Slack Infrastructure and MCP Tool) — COMPLETE
+Plan: 2 of 2 in current phase — COMPLETE
+Status: Phase 1 complete, ready for Phase 2
+Last activity: 2026-02-22 — Completed Plan 01-02 (MCP server, poll manager, ask_human_via_slack tool)
 
-Progress: [█░░░░░░░░░] 10%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 3 min
-- Total execution time: 3 min
+- Total plans completed: 2
+- Average duration: 9 min
+- Total execution time: 18 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-slack-infrastructure-and-mcp-tool | 1 | 3 min | 3 min |
+| 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
 
 **Recent Trend:**
-- Last 5 plans: 3 min
+- Last 5 plans: 9 min avg
 - Trend: Baseline established
 
 *Updated after each plan completion*
@@ -50,6 +50,10 @@ Recent decisions affecting current work:
 - [01-01]: Attachment wrapper (not top-level blocks) for Slack color bars — researched API pattern
 - [01-01]: auth.test() at startup validates token AND resolves bot user ID in one call, cached in SlackClient
 - [01-01]: SLACK_USER_ID is optional in Zod config; buildQuestionMessage accepts userId as separate param
+- [01-02]: Full jitter backoff (Math.random() * baseDelay) prevents thundering herd from multiple instances
+- [01-02]: registerTool() (non-deprecated) over tool() overloads — cleaner config object with inputSchema
+- [01-02]: MessageElement.subtype not in @slack/web-api type — used type field + bot_id for equivalent bot filtering
+- [01-02]: Two-stage timeout: 10-min poll → still-waiting bump → 10-min poll → timeout notice → error return
 
 ### Pending Todos
 
@@ -58,10 +62,10 @@ None yet.
 ### Blockers/Concerns
 
 - [Phase 2 gate]: `PermissionRequest.hookSpecificOutput.updatedInput.answers` answer-injection mechanism is unverified against actual Claude Code version. Phase 2 planning should include a research-phase step to verify before designing hook-answer coordination. Two outcomes: (a) injection works → first-response-wins achievable later; (b) not implemented → notification-only hooks, MCP tool as primary path.
-- [Phase 1]: Slack `conversations.replies` rate limit — new limits effective March 3, 2026 restrict non-Marketplace apps to 1 req/min. Mitigation: exponential backoff from the start; document that users must create their own Slack app (internal apps exempt at 50+ req/min).
+- [Phase 1 mitigated]: Slack `conversations.replies` rate limit — new limits effective March 3, 2026 restrict non-Marketplace apps to 1 req/min. Mitigation: exponential backoff implemented from day one; users must create their own Slack app (internal apps exempt at 50+ req/min).
 
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 01-01-PLAN.md — ready for Plan 02 (MCP server)
+Stopped at: Completed 01-02-PLAN.md — Phase 1 complete, dist/server.js is ready for Claude Code MCP config
 Resume file: None
