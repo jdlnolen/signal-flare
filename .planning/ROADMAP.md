@@ -12,7 +12,7 @@ Signal Flare ships in four phases that follow its natural dependency hierarchy. 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Slack Infrastructure and MCP Tool** - Working `ask_human_via_slack` MCP tool with Block Kit messages, exponential-backoff polling, and configurable timeouts
+- [x] **Phase 1: Slack Infrastructure and MCP Tool** - Working `ask_human_via_slack` MCP tool with Block Kit messages, exponential-backoff polling, and configurable timeouts
 - [ ] **Phase 2: Hook Integration** - Automatic Slack notifications via Stop, PostToolUseFailure, and PermissionRequest hooks with configurable idle timeout
 - [ ] **Phase 3: npm Packaging and Setup Wizard** - Global npm install, `signal-flare setup` wizard, environment-variable config, and polished README
 - [ ] **Phase 4: Quality and CI** - Test suite with good coverage and GitHub Actions CI pipeline
@@ -31,8 +31,8 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. Polling uses exponential backoff (3s initial, 15s cap) and never returns the bot's own question text as the human's answer
 **Plans:** 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffold, config validation, Slack client, and Block Kit message builder
-- [ ] 01-02-PLAN.md — Poll manager, MCP server entry point, and ask_human_via_slack tool wiring
+- [x] 01-01-PLAN.md — Project scaffold, config validation, Slack client, and Block Kit message builder
+- [x] 01-02-PLAN.md — Poll manager, MCP server entry point, and ask_human_via_slack tool wiring
 
 ### Phase 2: Hook Integration
 **Goal**: Signal Flare automatically notifies Slack for three Claude Code events — task completion, errors, and question detection — without requiring Claude to explicitly call a tool
@@ -45,7 +45,7 @@ Plans:
   4. The hook handler exits immediately after sending its notification and never blocks Claude Code's execution
 **Plans:** 2 plans
 Plans:
-- [ ] 02-01-PLAN.md — Hook infrastructure: types, config, message builders, lightweight Slack client, build config
+- [x] 02-01-PLAN.md — Hook infrastructure: types, config, message builders, lightweight Slack client, build config
 - [ ] 02-02-PLAN.md — Hook entry point, router, Stop/PostToolUseFailure/PermissionRequest handlers, and background watcher
 
 ### Phase 3: npm Packaging and Setup Wizard
@@ -77,7 +77,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Slack Infrastructure and MCP Tool | 0/2 | Planning complete | - |
-| 2. Hook Integration | 0/2 | Planning complete | - |
+| 1. Slack Infrastructure and MCP Tool | 2/2 | COMPLETE | 2026-02-22 |
+| 2. Hook Integration | 1/2 | In progress | - |
 | 3. npm Packaging and Setup Wizard | 0/TBD | Not started | - |
 | 4. Quality and CI | 0/TBD | Not started | - |

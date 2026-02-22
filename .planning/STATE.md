@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 1 complete — Phase 2 (Claude Code Hooks Integration) is next
+**Current focus:** Phase 2 (Claude Code Hooks Integration) — Plan 01 complete, Plan 02 is next
 
 ## Current Position
 
-Phase: 1 of 4 (Slack Infrastructure and MCP Tool) — COMPLETE
-Plan: 2 of 2 in current phase — COMPLETE
-Status: Phase 1 complete, ready for Phase 2
-Last activity: 2026-02-22 — Completed Plan 01-02 (MCP server, poll manager, ask_human_via_slack tool)
+Phase: 2 of 4 (Hook Integration) — IN PROGRESS
+Plan: 1 of 3 in current phase — COMPLETE
+Status: Phase 2 Plan 01 complete — hook infrastructure foundations ready
+Last activity: 2026-02-22 — Completed Plan 02-01 (hook input schemas, fast Slack client, unified message builder, multi-entry build)
 
-Progress: [██░░░░░░░░] 20%
+Progress: [███░░░░░░░] 30%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
+- Total plans completed: 3
 - Average duration: 9 min
-- Total execution time: 18 min
+- Total execution time: 26 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
+| 02-hook-integration | 1 | 8 min | 8 min |
 
 **Recent Trend:**
 - Last 5 plans: 9 min avg
-- Trend: Baseline established
+- Trend: Consistent
 
 *Updated after each plan completion*
 
@@ -54,6 +55,10 @@ Recent decisions affecting current work:
 - [01-02]: registerTool() (non-deprecated) over tool() overloads — cleaner config object with inputSchema
 - [01-02]: MessageElement.subtype not in @slack/web-api type — used type field + bot_id for equivalent bot filtering
 - [01-02]: Two-stage timeout: 10-min poll → still-waiting bump → 10-min poll → timeout notice → error return
+- [02-01]: createSlackClientDirect sets botUserId to "" — hook handlers never poll so bot filtering is not needed
+- [02-01]: HookInputSchema uses z.discriminatedUnion on hook_event_name for correct type narrowing per event type
+- [02-01]: buildHookMessage uses orange (#FFA500) for all hook notification types — locked decision (not distinct colors per type)
+- [02-01]: tsup banner kept unchanged — shebang on watcher.ts is harmless since it's invoked via node explicitly
 
 ### Pending Todos
 
@@ -67,5 +72,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 01-02-PLAN.md — Phase 1 complete, dist/server.js is ready for Claude Code MCP config
+Stopped at: Completed 02-01-PLAN.md — hook infrastructure foundations ready for Plan 02 handler implementation
 Resume file: None
