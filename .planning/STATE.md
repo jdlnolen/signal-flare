@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 3 (npm Packaging and Setup Wizard) — Plans 01 and 02 complete, Plan 03 is next
+**Current focus:** Phase 3 (npm Packaging and Setup Wizard) — All 3 plans complete, Phase 3 done
 
 ## Current Position
 
-Phase: 3 of 4 (npm Packaging and Setup Wizard) — IN PROGRESS
-Plan: 2 of 3 in current phase — COMPLETE
-Status: Phase 3 Plan 02 complete — Setup wizard, test command, and status command implemented with full Slack validation and safe config merging
-Last activity: 2026-02-22 — Completed Plan 03-02 (setup wizard, test/status commands, wizard utilities)
+Phase: 3 of 4 (npm Packaging and Setup Wizard) — COMPLETE
+Plan: 3 of 3 in current phase — COMPLETE
+Status: Phase 3 complete — CLI binary, setup wizard, and documentation (README + LICENSE) all done; ready for Phase 4
+Last activity: 2026-02-22 — Completed Plan 03-03 (README with Slack setup guide, troubleshooting, MIT LICENSE)
 
-Progress: [██████░░░░] 62%
+Progress: [███████░░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 5 min
-- Total execution time: 33 min
+- Total plans completed: 7
+- Average duration: 6 min
+- Total execution time: 45 min
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [██████░░░░] 62%
 |-------|-------|-------|----------|
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
 | 02-hook-integration | 2 | 10 min | 5 min |
-| 03-npm-packaging-and-setup-wizard | 2 | 5 min | 2.5 min |
+| 03-npm-packaging-and-setup-wizard | 3 | 17 min | 5.7 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min avg
-- Trend: Accelerating
+- Last 5 plans: 5 min avg
+- Trend: Stable
 
 *Updated after each plan completion*
 
@@ -71,6 +71,8 @@ Recent decisions affecting current work:
 - [03-02]: hookCommand uses inline env var syntax (SIGNAL_FLARE_ENV_FILE=<path> <handler>) — no shell env inheritance needed
 - [03-02]: promptForToken returns existing token on empty Enter — allows re-running setup without re-entering unchanged values
 - [03-02]: status command checks both global and project config paths simultaneously for complete picture
+- [03-03]: No screenshots in README — text-only per locked decision; demo GIF deferred as post-phase deliverable
+- [03-03]: 6 troubleshooting items included (above 5 minimum) to cover question-timeout confusion pattern
 
 ### Pending Todos
 
@@ -84,5 +86,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 03-02-PLAN.md — Setup wizard, test/status commands, wizard utilities done, ready for Phase 3 Plan 03
+Stopped at: Completed 03-03-PLAN.md — README with Slack setup guide and MIT LICENSE done; Phase 3 complete, ready for Phase 4
 Resume file: None

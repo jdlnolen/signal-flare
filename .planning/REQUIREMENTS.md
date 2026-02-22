@@ -26,10 +26,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Packaging & Distribution
 
 - [x] **PKG-01**: Published as npm global package (`npm install -g signal-flare`)
-- [ ] **PKG-02**: `signal-flare setup` wizard writes hook config to `~/.claude/settings.json` and MCP server config using absolute paths
+- [x] **PKG-02**: `signal-flare setup` wizard writes hook config to `~/.claude/settings.json` and MCP server config using absolute paths
 - [x] **PKG-03**: All logging uses `console.error()` — zero `console.log()` calls in MCP server code
 - [x] **PKG-04**: Configuration via environment variables: SLACK_BOT_TOKEN (required), SLACK_CHANNEL_ID (required), SLACK_USER_ID (optional)
-- [ ] **PKG-05**: Polished README with Slack app creation guide, required scopes, setup instructions, troubleshooting, and demo GIF
+- [x] **PKG-05**: Polished README with Slack app creation guide, required scopes, setup instructions, troubleshooting, and demo GIF
 - [ ] **PKG-06**: Test suite with good coverage (MCP tool, hook handler, Slack client, polling logic)
 - [ ] **PKG-07**: GitHub Actions CI pipeline (lint, typecheck, test on PR)
 
@@ -82,10 +82,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HOOK-03 | Phase 2 | Complete |
 | HOOK-04 | Phase 2 | Complete |
 | PKG-01 | Phase 3 | Complete |
-| PKG-02 | Phase 3 | Pending |
+| PKG-02 | Phase 3 | Complete |
 | PKG-03 | Phase 3 | Complete |
 | PKG-04 | Phase 3 | Complete |
-| PKG-05 | Phase 3 | Pending |
+| PKG-05 | Phase 3 | Complete |
 | PKG-06 | Phase 4 | Pending |
 | PKG-07 | Phase 4 | Pending |
 
