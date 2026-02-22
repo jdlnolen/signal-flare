@@ -47,3 +47,22 @@ export async function createSlackClient(config: Config): Promise<SlackClient> {
     channelId: config.SLACK_CHANNEL_ID,
   };
 }
+
+/**
+ * Creates a SlackClient without calling auth.test().
+ *
+ * Intended for use in Claude Code hook handlers which are short-lived processes
+ * invoked on every hook event. Skipping auth.test() avoids the 100-500ms
+ * round-trip on every invocation. Token validation is the caller's responsibility.
+ *
+ * The botUserId is set to "" because hook handlers never poll for replies,
+ * so bot-message filtering is not needed.
+ */
+export function createSlackClientDirect(config: Config): SlackClient {
+  const web = new WebClient(config.SLACK_BOT_TOKEN);
+  return {
+    web,
+    botUserId: "",
+    channelId: config.SLACK_CHANNEL_ID,
+  };
+}

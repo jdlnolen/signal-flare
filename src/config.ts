@@ -21,6 +21,11 @@ const ConfigSchema = z.object({
     .int()
     .min(0, { message: "POLL_TIMEOUT_MS must be >= 0" })
     .default(600000),
+  HOOK_IDLE_TIMEOUT_MS: z.coerce
+    .number()
+    .int()
+    .min(0)
+    .default(90000),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
@@ -43,8 +48,9 @@ export function loadConfig(): Config {
     console.error("  SLACK_CHANNEL_ID  — Slack channel ID (starts with C)");
     console.error("\nOptional environment variables:");
     console.error("  SLACK_USER_ID     — Slack user ID to @mention in messages");
-    console.error("  SEND_DELAY_MS     — Delay before sending (default: 0)");
-    console.error("  POLL_TIMEOUT_MS   — Poll timeout in ms (default: 600000)");
+    console.error("  SEND_DELAY_MS          — Delay before sending (default: 0)");
+    console.error("  POLL_TIMEOUT_MS        — Poll timeout in ms (default: 600000)");
+    console.error("  HOOK_IDLE_TIMEOUT_MS   — Hook idle timeout in ms (default: 90000)");
     process.exit(1);
   }
 
