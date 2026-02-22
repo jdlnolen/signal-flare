@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Slack Infrastructure and MCP Tool** - Working `ask_human_via_slack` MCP tool with Block Kit messages, exponential-backoff polling, and configurable timeouts
 - [x] **Phase 2: Hook Integration** - Automatic Slack notifications via Stop, PostToolUseFailure, and PermissionRequest hooks with configurable idle timeout (completed 2026-02-22)
 - [x] **Phase 3: npm Packaging and Setup Wizard** - Global npm install, `signal-flare setup` wizard, environment-variable config, and polished README (completed 2026-02-22)
-- [ ] **Phase 4: Quality and CI** - Test suite with good coverage and GitHub Actions CI pipeline
+- [x] **Phase 4: Quality and CI** - Test suite with good coverage and GitHub Actions CI pipeline (completed 2026-02-22)
 
 ## Phase Details
 
@@ -72,11 +72,11 @@ Plans:
   1. Running `npm test` locally executes tests for the MCP tool, hook handler, Slack client, and polling logic — all pass on a clean install
   2. Opening a pull request on GitHub automatically triggers the CI pipeline; the pipeline fails if lint, typecheck, or any test fails
   3. The polling loop test explicitly verifies that a thread containing only bot messages returns null (no false positive self-detection)
-**Plans:** 1/3 plans executed
+**Plans:** 3/3 plans complete
 Plans:
-- [ ] 04-01-PLAN.md — Tooling setup: install deps, configure ESLint/Prettier/Vitest, lint fix existing code
-- [ ] 04-02-PLAN.md — Tests for config, message builders, and hook handlers
-- [ ] 04-03-PLAN.md — Tests for Slack client, poller, ask-human tool, and GitHub Actions CI workflow
+- [x] 04-01-PLAN.md — Tooling setup: install deps, configure ESLint/Prettier/Vitest, lint fix existing code
+- [x] 04-02-PLAN.md — Tests for config, message builders, and hook handlers
+- [x] 04-03-PLAN.md — Tests for Slack client, poller, ask-human tool, and GitHub Actions CI workflow
 
 ## Progress
 
@@ -88,4 +88,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Slack Infrastructure and MCP Tool | 2/2 | COMPLETE | 2026-02-22 |
 | 2. Hook Integration | 2/2 | Complete   | 2026-02-22 |
 | 3. npm Packaging and Setup Wizard | 3/3 | Complete   | 2026-02-22 |
-| 4. Quality and CI | 1/3 | In Progress|  |
+| 4. Quality and CI | 3/3 | COMPLETE   | 2026-02-22 |

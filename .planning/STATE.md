@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 4 (Quality and CI) — Plan 2 of 3 complete
+**Current focus:** Phase 4 (Quality and CI) — Plan 3 of 3 complete — PHASE COMPLETE
 
 ## Current Position
 
-Phase: 4 of 4 (Quality and CI) — IN PROGRESS
-Plan: 2 of 3 in current phase — COMPLETE
-Status: Plan 04-02 complete — 115 unit tests written for config, messages, and all hook handlers; 90.73% statement coverage
-Last activity: 2026-02-22 — Completed Plan 04-02 (unit tests for pure modules)
+Phase: 4 of 4 (Quality and CI) — COMPLETE
+Plan: 3 of 3 in current phase — COMPLETE
+Status: Plan 04-03 complete — 43 tests for Slack client/poller/ask-human tool; GitHub Actions CI pipeline; 158 total tests, 90.73% statement coverage
+Last activity: 2026-02-22 — Completed Plan 04-03 (Slack client/poller tests + CI pipeline)
 
-Progress: [█████████░] 87%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 5.9 min
-- Total execution time: 53 min
+- Total plans completed: 10
+- Average duration: 6.3 min
+- Total execution time: 63 min
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [█████████░] 87%
 | 01-slack-infrastructure-and-mcp-tool | 2 | 18 min | 9 min |
 | 02-hook-integration | 2 | 10 min | 5 min |
 | 03-npm-packaging-and-setup-wizard | 3 | 17 min | 5.7 min |
-| 04-quality-and-ci | 2 | 8 min | 4 min |
+| 04-quality-and-ci | 3 | 18 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min avg
+- Last 5 plans: 5 min avg
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -82,6 +82,9 @@ Recent decisions affecting current work:
 - [04-02]: vi.spyOn(process, 'exit').mockImplementation(() => { throw ... }) used to test process.exit(1) without terminating test runner
 - [04-02]: vi.hoisted() required for mock function references inside vi.mock() factories in ESM context
 - [04-02]: Body section in Block Kit assertions found by filtering all section blocks and taking last — headline is always first section
+- [04-03]: captureToolHandler() pattern used to test MCP tool handler — server.registerTool() receives handler as callback; capturing allows direct testing without restructuring production code
+- [04-03]: SlackCallArgs / AnyBlock helper types added to test files — Slack's Block union type requires explicit casting to access subtype-specific properties (.text, .elements, .attachments)
+- [04-03]: (vi.mocked(WebClient) as any).mockImplementation() used for constructor mock — TypeScript NormalizedPrecedure type incompatible with simple function signatures; acceptable in test files with no-explicit-any disabled
 
 ### Pending Todos
 
@@ -95,5 +98,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 04-02-PLAN.md — 115 unit tests for config, messages, and all hook handlers; 90.73% statement coverage, 86.45% branch coverage
+Stopped at: Completed 04-03-PLAN.md — ALL PHASES COMPLETE. 158 tests pass, 90.73% statement coverage, GitHub Actions CI pipeline deployed
 Resume file: None
