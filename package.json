@@ -20,7 +20,12 @@
     "build": "tsup",
     "dev": "tsx src/server.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@inquirer/prompts": "^8.2.1",
@@ -31,11 +36,17 @@
     "zod": "^3.25.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@slack/types": "latest",
     "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.1.9",
+    "eslint": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
     "tsup": "^8.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.7.0",
+    "typescript-eslint": "^8.56.0",
     "vitest": "^2.0.0"
   }
 }
