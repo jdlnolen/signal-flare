@@ -59,7 +59,7 @@ Deferred to future release. Tracked but not in current roadmap.
 |---------|--------|
 | Slack Socket Mode / Events API | Adds WebSocket complexity + app-level token; polling is imperceptible for human response times |
 | OAuth flow for Slack setup | Requires web server + redirect URLs; manual bot token takes 5 minutes |
-| Interactive Slack buttons | Requires Slack Interactivity endpoint; incompatible with polling-only architecture |
+| Interactive Slack buttons | Requires Slack Interactivity endpoint; incompatible with polling-only CLI tool |
 | Webhook-only mode | Can't read replies — bidirectional is the core value prop |
 | Intercepting tool calls beyond AskUserQuestion | Creates notification spam; hundreds of hook fires per session |
 | Conversation history / audit log | Scope creep + security concern; Claude Code's transcript system handles this |
@@ -71,29 +71,29 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SLCK-01 | — | Pending |
-| SLCK-02 | — | Pending |
-| SLCK-03 | — | Pending |
-| SLCK-04 | — | Pending |
-| SLCK-05 | — | Pending |
-| SLCK-06 | — | Pending |
-| HOOK-01 | — | Pending |
-| HOOK-02 | — | Pending |
-| HOOK-03 | — | Pending |
-| HOOK-04 | — | Pending |
-| PKG-01 | — | Pending |
-| PKG-02 | — | Pending |
-| PKG-03 | — | Pending |
-| PKG-04 | — | Pending |
-| PKG-05 | — | Pending |
-| PKG-06 | — | Pending |
-| PKG-07 | — | Pending |
+| SLCK-01 | Phase 1 | Pending |
+| SLCK-02 | Phase 1 | Pending |
+| SLCK-03 | Phase 1 | Pending |
+| SLCK-04 | Phase 1 | Pending |
+| SLCK-05 | Phase 1 | Pending |
+| SLCK-06 | Phase 1 | Pending |
+| HOOK-01 | Phase 2 | Pending |
+| HOOK-02 | Phase 2 | Pending |
+| HOOK-03 | Phase 2 | Pending |
+| HOOK-04 | Phase 2 | Pending |
+| PKG-01 | Phase 3 | Pending |
+| PKG-02 | Phase 3 | Pending |
+| PKG-03 | Phase 3 | Pending |
+| PKG-04 | Phase 3 | Pending |
+| PKG-05 | Phase 3 | Pending |
+| PKG-06 | Phase 4 | Pending |
+| PKG-07 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 17 total
-- Mapped to phases: 0
-- Unmapped: 17 ⚠️
+- Mapped to phases: 17
+- Unmapped: 0 (complete)
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-22 after initial definition*
+*Last updated: 2026-02-22 after roadmap creation*
