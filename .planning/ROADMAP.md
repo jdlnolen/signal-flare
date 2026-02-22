@@ -29,7 +29,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. If no Slack reply arrives within the timeout, Claude receives a timeout error and a "timed out" notice appears in the Slack thread
   4. Messages @mention the configured user (SLACK_USER_ID), triggering push notifications on their phone
   5. Polling uses exponential backoff (3s initial, 15s cap) and never returns the bot's own question text as the human's answer
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffold, config validation, Slack client, and Block Kit message builder
+- [ ] 01-02-PLAN.md — Poll manager, MCP server entry point, and ask_human_via_slack tool wiring
 
 ### Phase 2: Hook Integration
 **Goal**: Signal Flare automatically notifies Slack for three Claude Code events — task completion, errors, and question detection — without requiring Claude to explicitly call a tool
@@ -71,7 +74,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Slack Infrastructure and MCP Tool | 0/TBD | Not started | - |
+| 1. Slack Infrastructure and MCP Tool | 0/2 | Planning complete | - |
 | 2. Hook Integration | 0/TBD | Not started | - |
 | 3. npm Packaging and Setup Wizard | 0/TBD | Not started | - |
 | 4. Quality and CI | 0/TBD | Not started | - |
