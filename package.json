@@ -5,11 +5,17 @@
   "description": "Signal Flare bridges Claude Code and Slack — sends rich notifications when Claude needs your input and brings your response back so Claude keeps working.",
   "main": "./dist/server.js",
   "bin": {
-    "signal-flare": "./dist/server.js"
+    "signal-flare": "./dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT",
   "scripts": {
     "build": "tsup",
     "dev": "tsx src/server.ts",
@@ -17,8 +23,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@inquirer/prompts": "^8.2.1",
     "@modelcontextprotocol/sdk": "^1.27.0",
     "@slack/web-api": "^7.14.1",
+    "commander": "^14.0.3",
+    "dotenv": "^17.3.1",
     "zod": "^3.25.0"
   },
   "devDependencies": {

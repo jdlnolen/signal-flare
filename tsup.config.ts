@@ -2,6 +2,7 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: [
+    "src/cli.ts",
     "src/server.ts",
     "src/hook-handler.ts",
     "src/hooks/watcher.ts",
