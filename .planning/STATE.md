@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-22)
 ## Current Position
 
 Phase: 1 of 4 (Slack Infrastructure and MCP Tool)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-22 — Roadmap created
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-22 — Completed Plan 01-01 (Project scaffold and foundation modules)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 10%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: —
+- Total plans completed: 1
+- Average duration: 3 min
+- Total execution time: 3 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-slack-infrastructure-and-mcp-tool | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: —
-- Trend: —
+- Last 5 plans: 3 min
+- Trend: Baseline established
 
 *Updated after each plan completion*
 
@@ -46,6 +46,10 @@ Recent decisions affecting current work:
 - [Research]: Polling over Socket Mode — simpler architecture, sufficient for human response timescales
 - [Research]: Each user creates their own Slack app (internal app) to stay exempt from Slack rate limits on `conversations.replies`
 - [Research]: stdout constraint is non-negotiable — `console.log()` corrupts MCP JSON-RPC stream; lint rule from day one
+- [01-01]: ESM module format with Node16 resolution required by MCP SDK and @slack/web-api
+- [01-01]: Attachment wrapper (not top-level blocks) for Slack color bars — researched API pattern
+- [01-01]: auth.test() at startup validates token AND resolves bot user ID in one call, cached in SlackClient
+- [01-01]: SLACK_USER_ID is optional in Zod config; buildQuestionMessage accepts userId as separate param
 
 ### Pending Todos
 
@@ -59,5 +63,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Roadmap created, STATE.md initialized — ready to plan Phase 1
+Stopped at: Completed 01-01-PLAN.md — ready for Plan 02 (MCP server)
 Resume file: None
