@@ -2,19 +2,15 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-22)
+See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** When Claude Code needs you and you're not watching the terminal, Signal Flare gets the message to you in Slack and brings your response back — so Claude keeps working instead of sitting idle.
-**Current focus:** Phase 4 (Quality and CI) — Plan 3 of 3 complete — PHASE COMPLETE
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 4 of 4 (Quality and CI) — COMPLETE
-Plan: 3 of 3 in current phase — COMPLETE
-Status: Plan 04-03 complete — 43 tests for Slack client/poller/ask-human tool; GitHub Actions CI pipeline; 158 total tests, 90.73% statement coverage
-Last activity: 2026-02-22 — Completed Plan 04-03 (Slack client/poller tests + CI pipeline)
-
-Progress: [██████████] 100%
+Milestone v1.0 complete. Ready for next milestone.
+Last activity: 2026-02-26 — Completed v1.0 MVP milestone
 
 ## Performance Metrics
 
@@ -32,10 +28,6 @@ Progress: [██████████] 100%
 | 03-npm-packaging-and-setup-wizard | 3 | 17 min | 5.7 min |
 | 04-quality-and-ci | 3 | 18 min | 6 min |
 
-**Recent Trend:**
-- Last 5 plans: 5 min avg
-- Trend: Stable
-
 *Updated after each plan completion*
 
 ## Accumulated Context
@@ -43,60 +35,17 @@ Progress: [██████████] 100%
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
-
-- [Research]: Build `ask_human_via_slack` MCP tool as primary path; treat hook answer-injection as enhancement pending verification of `hookSpecificOutput.updatedInput.answers`
-- [Research]: Polling over Socket Mode — simpler architecture, sufficient for human response timescales
-- [Research]: Each user creates their own Slack app (internal app) to stay exempt from Slack rate limits on `conversations.replies`
-- [Research]: stdout constraint is non-negotiable — `console.log()` corrupts MCP JSON-RPC stream; lint rule from day one
-- [01-01]: ESM module format with Node16 resolution required by MCP SDK and @slack/web-api
-- [01-01]: Attachment wrapper (not top-level blocks) for Slack color bars — researched API pattern
-- [01-01]: auth.test() at startup validates token AND resolves bot user ID in one call, cached in SlackClient
-- [01-01]: SLACK_USER_ID is optional in Zod config; buildQuestionMessage accepts userId as separate param
-- [01-02]: Full jitter backoff (Math.random() * baseDelay) prevents thundering herd from multiple instances
-- [01-02]: registerTool() (non-deprecated) over tool() overloads — cleaner config object with inputSchema
-- [01-02]: MessageElement.subtype not in @slack/web-api type — used type field + bot_id for equivalent bot filtering
-- [01-02]: Two-stage timeout: 10-min poll → still-waiting bump → 10-min poll → timeout notice → error return
-- [02-01]: createSlackClientDirect sets botUserId to "" — hook handlers never poll so bot filtering is not needed
-- [02-01]: HookInputSchema uses z.discriminatedUnion on hook_event_name for correct type narrowing per event type
-- [02-01]: buildHookMessage uses orange (#FFA500) for all hook notification types — locked decision (not distinct colors per type)
-- [02-01]: tsup banner kept unchanged — shebang on watcher.ts is harmless since it's invoked via node explicitly
-- [Phase 02-02]: extractSummary uses first sentence (split on [.!?] + whitespace) truncated to 200 chars — matches locked one-line summary decision
-- [Phase 02-02]: stop_hook_active guard in handleStop prevents infinite hook loop
-- [Phase 02-02]: isAskHuman uses .includes('ask_human_via_slack') not exact match — handles MCP naming convention
-- [Phase 02-02]: Watcher logs to ~/.claude/signal-flare-watcher.log — detached stdio:ignore makes stderr invisible
-- [03-01]: CLI shebang handled by tsup banner only — literal shebang in src/cli.ts causes double-shebang breaking ESM loading
-- [03-01]: dotenv.config({ quiet: true }) used to suppress dotenv v17 verbose output in MCP server context
-- [03-01]: resolveEnvFilePath() is synchronous (readFileSync at startup); SIGNAL_FLARE_ENV_FILE > ~/.config/signal-flare/config.json fallback
-- [03-02]: PermissionRequest hook uses PreToolUse key with matcher ".*" — handler internally filters for AskUserQuestion
-- [03-02]: hookCommand uses inline env var syntax (SIGNAL_FLARE_ENV_FILE=<path> <handler>) — no shell env inheritance needed
-- [03-02]: promptForToken returns existing token on empty Enter — allows re-running setup without re-entering unchanged values
-- [03-02]: status command checks both global and project config paths simultaneously for complete picture
-- [03-03]: No screenshots in README — text-only per locked decision; demo GIF deferred as post-phase deliverable
-- [03-03]: 6 troubleshooting items included (above 5 minimum) to cover question-timeout confusion pattern
-- [04-01]: @vitest/coverage-v8 pinned to @2 to match vitest@2.1.9 — * would resolve to v4 requiring vitest v4
-- [04-01]: @eslint/js installed separately — ESLint v10 does not bundle it as a transitive dependency
-- [04-01]: spawnWatcher config param removed (was unused) rather than using eslint-disable — cleaner API
-- [04-01]: 85% coverage threshold chosen (not 90%) — adjust once tests measure actual achievable coverage
-- [04-02]: vi.resetModules() + dynamic import() is the correct ESM pattern for testing modules that read process.env at load time
-- [04-02]: vi.spyOn(process, 'exit').mockImplementation(() => { throw ... }) used to test process.exit(1) without terminating test runner
-- [04-02]: vi.hoisted() required for mock function references inside vi.mock() factories in ESM context
-- [04-02]: Body section in Block Kit assertions found by filtering all section blocks and taking last — headline is always first section
-- [04-03]: captureToolHandler() pattern used to test MCP tool handler — server.registerTool() receives handler as callback; capturing allows direct testing without restructuring production code
-- [04-03]: SlackCallArgs / AnyBlock helper types added to test files — Slack's Block union type requires explicit casting to access subtype-specific properties (.text, .elements, .attachments)
-- [04-03]: (vi.mocked(WebClient) as any).mockImplementation() used for constructor mock — TypeScript NormalizedPrecedure type incompatible with simple function signatures; acceptable in test files with no-explicit-any disabled
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-- [Phase 2 gate]: `PermissionRequest.hookSpecificOutput.updatedInput.answers` answer-injection mechanism is unverified against actual Claude Code version. Phase 2 planning should include a research-phase step to verify before designing hook-answer coordination. Two outcomes: (a) injection works → first-response-wins achievable later; (b) not implemented → notification-only hooks, MCP tool as primary path.
-- [Phase 1 mitigated]: Slack `conversations.replies` rate limit — new limits effective March 3, 2026 restrict non-Marketplace apps to 1 req/min. Mitigation: exponential backoff implemented from day one; users must create their own Slack app (internal apps exempt at 50+ req/min).
+None — milestone complete.
 
 ## Session Continuity
 
-Last session: 2026-02-22
-Stopped at: Completed 04-03-PLAN.md — ALL PHASES COMPLETE. 158 tests pass, 90.73% statement coverage, GitHub Actions CI pipeline deployed
+Last session: 2026-02-26
+Stopped at: Completed v1.0 milestone archival
 Resume file: None
