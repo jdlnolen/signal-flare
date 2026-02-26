@@ -24,12 +24,12 @@ import {
  * Guides the user through providing Slack credentials, validates them via the
  * Slack API, and writes all required config files for Claude Code integration.
  */
-export async function runSetup(): Promise<void> {
+export async function runSetup(version: string): Promise<void> {
   ensureTTY();
 
   // Welcome banner
   console.log("\n=====================================");
-  console.log("  Signal Flare Setup");
+  console.log(`  Signal Flare Setup  v${version}`);
   console.log("=====================================");
   console.log("This wizard will configure Signal Flare to send Slack notifications");
   console.log("when Claude Code needs your input, and bring your response back.\n");

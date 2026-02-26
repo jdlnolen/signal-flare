@@ -1,12 +1,14 @@
 // CLI entry point for signal-flare — #!/usr/bin/env node shebang added by tsup banner
 // NOTE: console.log() is permitted here — this is a user-facing CLI process, not an MCP server
 
+import { createRequire } from "node:module";
 import { Command } from "commander";
 import { runSetup } from "./commands/setup.js";
 import { runTest } from "./commands/test.js";
 import { runStatus } from "./commands/status.js";
 
-const VERSION = "0.1.0";
+const _require = createRequire(import.meta.url);
+const { version: VERSION } = _require("../package.json") as { version: string };
 
 const program = new Command();
 
@@ -16,7 +18,7 @@ program
   .command("setup")
   .description("Configure Signal Flare for your workspace")
   .action(async () => {
-    await runSetup();
+    await runSetup(VERSION);
   });
 
 program

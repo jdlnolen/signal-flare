@@ -37,10 +37,9 @@ function readStdin(): Promise<string> {
 
     const result = HookInputSchema.safeParse(parsed);
     if (!result.success) {
-      console.error(
-        "[signal-flare hook] Invalid hook input — schema validation failed:",
-        result.error.flatten()
-      );
+      // Silently exit for unrecognized hook events — avoids Claude Code "hook error" noise.
+      // This is expected when stale hook entries exist or Claude Code sends events
+      // Signal Flare doesn't handle (e.g., PreToolUse, PostToolUse).
       process.exit(0);
     }
 

@@ -152,14 +152,24 @@ export function writeHooksConfig(
   });
   hooks["PostToolUseFailure"] = postToolFailureHooks;
 
-  // PreToolUse hook (omit matcher to fire on all tools)
+  // Clean up stale Signal Flare entries from PreToolUse (migrated to PermissionRequest)
+  if (Array.isArray(hooks["PreToolUse"])) {
+    const cleanedPreToolUse = removeExistingEntries(hooks["PreToolUse"] as unknown[]);
+    if (cleanedPreToolUse.length > 0) {
+      hooks["PreToolUse"] = cleanedPreToolUse;
+    } else {
+      delete hooks["PreToolUse"];
+    }
+  }
+
+  // PermissionRequest hook — fires when Claude needs human approval for a risky action
   const permissionHooks = removeExistingEntries(
-    Array.isArray(hooks["PreToolUse"]) ? (hooks["PreToolUse"] as unknown[]) : []
+    Array.isArray(hooks["PermissionRequest"]) ? (hooks["PermissionRequest"] as unknown[]) : []
   );
   permissionHooks.push({
     hooks: [{ type: "command", command: hookCommand }],
   });
-  hooks["PreToolUse"] = permissionHooks;
+  hooks["PermissionRequest"] = permissionHooks;
 
   const merged = { ...existing, hooks };
   writeFileSync(settingsPath, JSON.stringify(merged, null, 2), "utf8");
