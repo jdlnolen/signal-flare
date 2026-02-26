@@ -129,35 +129,34 @@ export function writeHooksConfig(
   }
 
   // Claude Code hooks use the matcher/hooks format:
-  // { "matcher": { ... }, "hooks": [{ "type": "command", "command": "..." }] }
+  // { "matcher": "regex", "hooks": [{ "type": "command", "command": "..." }] }
+  // matcher is a regex string (or omit for "match all"). Stop and PostToolUseFailure
+  // don't support matchers and always fire on every occurrence.
   // See: https://code.claude.com/docs/en/hooks
 
-  // Stop hook (no matcher needed — fires on all stops)
+  // Stop hook (no matcher support — always fires on every stop)
   const stopHooks = removeExistingEntries(
     Array.isArray(hooks["Stop"]) ? (hooks["Stop"] as unknown[]) : []
   );
   stopHooks.push({
-    matcher: {},
     hooks: [{ type: "command", command: hookCommand }],
   });
   hooks["Stop"] = stopHooks;
 
-  // PostToolUseFailure hook (no matcher needed — fires on all tool failures)
+  // PostToolUseFailure hook (no matcher support — always fires on every failure)
   const postToolFailureHooks = removeExistingEntries(
     Array.isArray(hooks["PostToolUseFailure"]) ? (hooks["PostToolUseFailure"] as unknown[]) : []
   );
   postToolFailureHooks.push({
-    matcher: {},
     hooks: [{ type: "command", command: hookCommand }],
   });
   hooks["PostToolUseFailure"] = postToolFailureHooks;
 
-  // PreToolUse hook (matcher: all tools — fires on all permission requests)
+  // PreToolUse hook (omit matcher to fire on all tools)
   const permissionHooks = removeExistingEntries(
     Array.isArray(hooks["PreToolUse"]) ? (hooks["PreToolUse"] as unknown[]) : []
   );
   permissionHooks.push({
-    matcher: {},
     hooks: [{ type: "command", command: hookCommand }],
   });
   hooks["PreToolUse"] = permissionHooks;

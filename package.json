@@ -1,6 +1,6 @@
 {
   "name": "signal-flare",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "type": "module",
   "description": "Signal Flare bridges Claude Code and Slack — sends rich notifications when Claude needs your input and brings your response back so Claude keeps working.",
   "main": "./dist/server.js",
