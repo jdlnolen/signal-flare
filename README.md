@@ -51,10 +51,14 @@ Signal Flare uses your own personal Slack app — this keeps it exempt from Slac
 
 3. In the left sidebar, click **OAuth & Permissions**.
 
-4. Scroll down to **Scopes** > **Bot Token Scopes**. Click **Add an OAuth Scope** and add all three of the following scopes:
+4. Scroll down to **Scopes** > **Bot Token Scopes**. Click **Add an OAuth Scope** and add the following scopes:
    - `chat:write` — Allows the bot to send messages to channels
-   - `channels:history` — Allows the bot to read message replies (used to poll for your Slack responses)
-   - `channels:read` — Allows the bot to verify it has access to the target channel
+   - `channels:history` — Read message replies in public channels
+   - `channels:read` — Verify access to public channels
+
+   **If using a private channel**, also add:
+   - `groups:history` — Read message replies in private channels
+   - `groups:read` — Verify access to private channels
 
 5. Scroll back to the top of the **OAuth & Permissions** page and click **Install to Workspace**. Review the permissions and click **Allow**.
 
@@ -145,8 +149,11 @@ Your credentials are not loading. Run `signal-flare setup` to configure them, or
 **Bot is not posting messages to the channel**
 Make sure your bot is invited to the channel. In Slack, open the channel and type `/invite @YourBotName`. Without this step, the bot has a token but no permission to post in that channel.
 
+**"missing_scope" error during setup**
+Your bot token is missing a required OAuth scope. For public channels, you need `channels:read` and `channels:history`. For private channels, you need `groups:read` and `groups:history`. Add the missing scope in your Slack app's **OAuth & Permissions** page, then **reinstall the app to your workspace** (Slack requires reinstallation after scope changes).
+
 **"channel_not_found" error**
-Verify that your `SLACK_CHANNEL_ID` starts with `C` (not the channel name, which starts with `#`). Also confirm the bot has the `channels:read` scope — check **OAuth & Permissions** > **Bot Token Scopes** in your Slack app settings.
+Verify that your `SLACK_CHANNEL_ID` starts with `C` (not the channel name, which starts with `#`). Also confirm the bot is invited to the channel (`/invite @YourBotName`) and has the appropriate read scope (`channels:read` for public, `groups:read` for private).
 
 **Hooks are not firing**
 Run `signal-flare status` to see the current state. Verify that `~/.claude/settings.json` contains hook entries for `Stop`, `PostToolUseFailure`, and `PermissionRequest`. If hooks are missing, re-run `signal-flare setup`. After any settings change, restart Claude Code completely.

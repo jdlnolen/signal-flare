@@ -48,6 +48,12 @@ export async function validateSlackCredentials(
           error: `Invalid channel: channel not found or bot is not a member of the channel. Make sure the bot is invited to the channel.`,
         };
       }
+      if (message.includes("missing_scope")) {
+        return {
+          valid: false,
+          error: `Missing Slack scope: the bot needs "channels:read" (public channels) or "groups:read" (private channels). Add the missing scope in your Slack app's OAuth & Permissions page, then reinstall the app to your workspace.`,
+        };
+      }
       return { valid: false, error: `Invalid channel: ${message}` };
     }
 
