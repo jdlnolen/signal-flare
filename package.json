@@ -1,6 +1,6 @@
 {
   "name": "signal-flare",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "module",
   "description": "Signal Flare bridges Claude Code and Slack — sends rich notifications when Claude needs your input and brings your response back so Claude keeps working.",
   "main": "./dist/server.js",
@@ -16,6 +16,10 @@
     "node": ">=18.0.0"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jdlnolen/signal-flare"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsx src/server.ts",
