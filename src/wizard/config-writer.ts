@@ -102,42 +102,64 @@ export function writeHooksConfig(
   // The hook command with inline env var so hook handler can find the .env
   const hookCommand = `SIGNAL_FLARE_ENV_FILE=${envFilePath} ${hookHandlerPath}`;
 
-  // Helper: remove existing Signal Flare entries from a hooks array
+  // Helper: remove existing Signal Flare entries from a hooks array.
+  // Handles both old format ({ command: "..." }) and new format ({ matcher: {}, hooks: [...] }).
   function removeExistingEntries(arr: unknown[]): unknown[] {
     return arr.filter((entry) => {
       if (typeof entry === "object" && entry !== null) {
         const e = entry as Record<string, unknown>;
+        // Old format: { command: "...signal-flare..." }
         if (typeof e.command === "string" && e.command.includes("signal-flare")) {
           return false;
         }
-        // Also handle nested hooks array format
+        // New format: { matcher: {}, hooks: [{ type: "command", command: "...signal-flare..." }] }
         if (Array.isArray(e.hooks)) {
-          return false; // Will be replaced entirely
+          const hasSignalFlare = (e.hooks as unknown[]).some((h) => {
+            if (typeof h === "object" && h !== null) {
+              const hook = h as Record<string, unknown>;
+              return typeof hook.command === "string" && hook.command.includes("signal-flare");
+            }
+            return false;
+          });
+          if (hasSignalFlare) return false;
         }
       }
       return true;
     });
   }
 
-  // Stop hook (async: true — non-blocking)
+  // Claude Code hooks use the matcher/hooks format:
+  // { "matcher": { ... }, "hooks": [{ "type": "command", "command": "..." }] }
+  // See: https://code.claude.com/docs/en/hooks
+
+  // Stop hook (no matcher needed — fires on all stops)
   const stopHooks = removeExistingEntries(
     Array.isArray(hooks["Stop"]) ? (hooks["Stop"] as unknown[]) : []
   );
-  stopHooks.push({ command: hookCommand, async: true });
+  stopHooks.push({
+    matcher: {},
+    hooks: [{ type: "command", command: hookCommand }],
+  });
   hooks["Stop"] = stopHooks;
 
-  // PostToolUseFailure hook (async: true — non-blocking)
+  // PostToolUseFailure hook (no matcher needed — fires on all tool failures)
   const postToolFailureHooks = removeExistingEntries(
     Array.isArray(hooks["PostToolUseFailure"]) ? (hooks["PostToolUseFailure"] as unknown[]) : []
   );
-  postToolFailureHooks.push({ command: hookCommand, async: true });
+  postToolFailureHooks.push({
+    matcher: {},
+    hooks: [{ type: "command", command: hookCommand }],
+  });
   hooks["PostToolUseFailure"] = postToolFailureHooks;
 
-  // PermissionRequest hook (matcher: ".*" — fires on all permission requests)
+  // PreToolUse hook (matcher: all tools — fires on all permission requests)
   const permissionHooks = removeExistingEntries(
     Array.isArray(hooks["PreToolUse"]) ? (hooks["PreToolUse"] as unknown[]) : []
   );
-  permissionHooks.push({ matcher: ".*", command: hookCommand });
+  permissionHooks.push({
+    matcher: {},
+    hooks: [{ type: "command", command: hookCommand }],
+  });
   hooks["PreToolUse"] = permissionHooks;
 
   const merged = { ...existing, hooks };
